@@ -4,7 +4,7 @@ export const Header = () => {
   return (
     <Box textAlign="center" py={8}>
       <Heading as="h1" size="2xl" color="blue.600">
-        TECSOQR
+        TECSOQR v1.0
       </Heading>
       <Text mt={2} fontSize="lg">
         Create Custom QR Codes for Free

@@ -1,4 +1,5 @@
 import { Box, Button, VStack } from '@chakra-ui/react';
+import { DownloadIcon } from '@chakra-ui/icons';
 import { QRCodeCanvas } from 'qrcode.react';
 import { useRef } from 'react';
 
@@ -27,21 +28,29 @@ export const QRPreview = ({ content, foregroundColor, backgroundColor, size, lev
   };
 
   return (
-    <Box p={4} borderRadius="lg" bg="white" shadow="base" textAlign="center">
+    <Box p={[3, 4]} borderRadius="lg" bg="white" shadow="base" textAlign="center" width="100%" maxW="600px" mx="auto">
       <VStack spacing={4}>
         {content && (
-          <QRCodeCanvas
-            ref={qrRef}
-            value={content}
-            size={size}
-            fgColor={foregroundColor}
-            bgColor={backgroundColor}
-            level={level}
-            includeMargin={true}
-          />
+          <Box overflow="auto" p={2}>
+            <QRCodeCanvas
+              ref={qrRef}
+              value={content}
+              size={Math.min(size, window.innerWidth - 64)}
+              fgColor={foregroundColor}
+              bgColor={backgroundColor}
+              level={level}
+              includeMargin={true}
+            />
+          </Box>
         )}
         {content && (
-          <Button colorScheme="blue" onClick={downloadQRCode}>
+          <Button
+            colorScheme="blue"
+            onClick={downloadQRCode}
+            size="lg"
+            width={["100%", "auto"]}
+            leftIcon={<DownloadIcon />}
+          >
             Download QR Code
           </Button>
         )}
