@@ -28,7 +28,7 @@ export const Navbar = () => {
         <Flex justify="space-between" align="center">
           <HStack spacing={8}>
             <Box>
-              <Image h="40px" src="../assets/logo.png" alt="TECSOQR" />
+              <Image h="40px" src="../assets/logo.svg" alt="TECSOQR" />
             </Box>
             <HStack spacing={4} display={{ base: 'none', md: 'flex' }}>
               <Button variant="ghost">ABOUT</Button>
