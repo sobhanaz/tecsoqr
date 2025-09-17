@@ -3,6 +3,12 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "overrides": {
+    "framer-motion": {
+      "react": "^19.1.1",
+      "react-dom": "^19.1.1"
+    }
+  },
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
