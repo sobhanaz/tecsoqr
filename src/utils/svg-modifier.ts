@@ -13,10 +13,8 @@ export function modifySvgStyles(svg: string, customization?: QRCodeCustomization
 
     const [, x, y, width, height] = match.map(Number);
     
-    // Determine if this is a corner finder pattern based on size and position
-    const size = Math.max(width, height);
-    const cornerSize = 7; // Standard size for QR code corner patterns
-    const isFinderPattern = size === cornerSize;
+    // Use the passed isCorner parameter directly instead of size detection
+    const isFinderPattern = isCorner;
     
     if (isFinderPattern && customization?.cornerStyle) {
       // Apply corner style
