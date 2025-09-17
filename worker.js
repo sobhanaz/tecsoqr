@@ -3,68 +3,71 @@ addEventListener('fetch', event => {
 });
 
 async function handleRequest(request) {
-  const incomingUrl = new URL(request.url);
+  const url = new URL(request.url);
 
-  // Step 1: Force HTTPS
-  if (incomingUrl.protocol !== "https:") {
-    const httpsURL = `https://${incomingUrl.hostname}${incomingUrl.pathname}${incomingUrl.search}`;
-    return Response.redirect(httpsURL, 301);
+  // Force HTTPS
+  if (url.protocol !== "https:") {
+    return Response.redirect(`https://${url.hostname}${url.pathname}${url.search}`, 301);
   }
 
-  // Step 2: Define your GitHub Pages target
-  const targetBase = "https://sobhanaz.github.io/tecsoqr";
+  // GitHub Pages target with /tecsoqr/ subpath
+  const githubPagesBase = "https://sobhanaz.github.io";
   
-  // Step 3: Handle path rewriting for Vite app with base: '/tecsoqr/'
-  let targetPath = incomingUrl.pathname;
+  // Handle SPA routing - all paths should serve the React app
+  // For GitHub Pages with project site (username.github.io/repo-name)
+  // we need to prefix all requests with /tecsoqr/
+  let path = url.pathname;
   
-  // If root path, serve index.html from GitHub Pages (which will load the React app)
-  if (targetPath === '/' || targetPath === '/index.html') {
-    targetPath = '/index.html';
+  // If it's the root path, we need to serve /tecsoqr/index.html
+  if (path === '/' || path === '/index.html') {
+    path = '/tecsoqr/index.html';
+  }
+  // If it's any other path that doesn't start with /tecsoqr/, add the prefix
+  else if (!path.startsWith('/tecsoqr/')) {
+    path = '/tecsoqr' + path;
   }
   
-  // For all other paths, check if they need the /tecsoqr/ prefix
-  // Vite builds assets with /tecsoqr/ prefix, so we need to handle this
-  const isAsset = targetPath.includes('/assets/') || 
-                  targetPath.endsWith('.js') || 
-                  targetPath.endsWith('.css') ||
-                  targetPath.endsWith('.svg') ||
-                  targetPath.endsWith('.png') ||
-                  targetPath.endsWith('.ico') ||
-                  targetPath.endsWith('.json') ||
-                  targetPath.endsWith('.woff') ||
-                  targetPath.endsWith('.woff2') ||
-                  targetPath.endsWith('.ttf');
-  
-  // If it's an asset or the path doesn't start with /tecsoqr/, add the prefix
-  if (isAsset || !targetPath.startsWith('/tecsoqr/')) {
-    targetPath = '/tecsoqr' + targetPath;
+  // Handle assets - they should already be prefixed with /tecsoqr/ in the build
+  // But if someone requests /assets/... directly, we need to add the prefix
+  if (path.includes('/assets/') && !path.startsWith('/tecsoqr/')) {
+    path = '/tecsoqr' + path;
   }
 
-  const proxiedUrl = targetBase + targetPath + incomingUrl.search;
+  const targetUrl = githubPagesBase + path + url.search;
 
-  // Step 4: Create modified request
-  const modifiedRequest = new Request(proxiedUrl, {
-    method: request.method,
+  // Fetch from GitHub Pages
+  let response = await fetch(targetUrl, {
     headers: request.headers,
-    body: request.method !== "GET" && request.method !== "HEAD" ? request.body : undefined,
-    redirect: "follow",
+    method: request.method,
+    body: request.method !== 'GET' && request.method !== 'HEAD' ? request.body : undefined,
+    redirect: 'follow'
   });
 
-  let response = await fetch(modifiedRequest);
+  // For SPA routing, if GitHub returns 404, try serving index.html
+  if (response.status === 404 && !path.endsWith('.html')) {
+    const spaResponse = await fetch(githubPagesBase + '/tecsoqr/index.html', {
+      headers: request.headers,
+      method: 'GET'
+    });
+    
+    if (spaResponse.status === 200) {
+      response = spaResponse;
+    }
+  }
 
-  // Step 5: Adjust headers (CORS + CSP fix)
-  const newHeaders = new Headers(response.headers);
-  newHeaders.set("Access-Control-Allow-Origin", "https://qrcode.tecso.team");
-  newHeaders.delete("Content-Security-Policy");
+  // Modify response headers for CORS and remove CSP
+  const headers = new Headers(response.headers);
+  headers.set('Access-Control-Allow-Origin', 'https://qrcode.tecso.team');
+  headers.delete('Content-Security-Policy');
   
-  // Fix content-type for HTML files
-  if (targetPath.endsWith('.html')) {
-    newHeaders.set("Content-Type", "text/html; charset=utf-8");
+  // Ensure proper content type for HTML
+  if (path.endsWith('.html')) {
+    headers.set('Content-Type', 'text/html; charset=utf-8');
   }
 
   return new Response(response.body, {
     status: response.status,
     statusText: response.statusText,
-    headers: newHeaders,
+    headers: headers
   });
 }
