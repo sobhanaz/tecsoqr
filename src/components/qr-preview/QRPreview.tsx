@@ -14,8 +14,8 @@ import {
   useToast,
 } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
-import type { QRCodeContent, QRCodeCustomization, QRCodeOutput } from '../../types/qr-code';
-import { QRCodeService } from '../../services/qr-code.service';
+import type { QRCodeContent, QRCodeCustomization, QRCodeOutput } from '@/types/qr-code';
+import { QRCodeService } from '@/services/qr-code.service';
 import { DownloadIcon } from '@chakra-ui/icons';
 
 interface QRPreviewProps {

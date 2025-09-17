@@ -1,5 +1,5 @@
 import QRCode from 'qrcode';
-import type { QRCodeContent, QRCodeCustomization, QRCodeOutput, QRCodeVCard, QRCodeWiFi } from '../types/qr-code';
+import type { QRCodeContent, QRCodeCustomization, QRCodeOutput, QRCodeVCard, QRCodeWiFi } from '@/types/qr-code';
 
 export class QRCodeService {
   private static encodeVCard(vcard: QRCodeVCard): string {

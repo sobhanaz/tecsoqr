@@ -1,5 +1,5 @@
 import { Input, Textarea, VStack } from '@chakra-ui/react';
-import type { QRCodeEmail } from '../../types/qr-code';
+import type { QRCodeEmail } from '@/types/qr-code';
 import { QRForm, QRFormField } from './QRForm';
 
 interface EmailFormProps {

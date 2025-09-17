@@ -1,5 +1,5 @@
 import { Textarea } from '@chakra-ui/react';
-import type { QRCodeText } from '../../types/qr-code';
+import type { QRCodeText } from '@/types/qr-code';
 import { QRForm, QRFormField } from './QRForm';
 
 interface TextFormProps {

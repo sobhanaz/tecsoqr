@@ -1,5 +1,5 @@
 import { Input } from '@chakra-ui/react';
-import type { QRCodeURL } from '../../types/qr-code';
+import type { QRCodeURL } from '@/types/qr-code';
 import { QRForm, QRFormField } from './QRForm';
 
 interface URLFormProps {

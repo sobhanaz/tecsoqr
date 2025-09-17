@@ -1,5 +1,5 @@
 import { Input, Select, Switch, VStack } from '@chakra-ui/react';
-import type { QRCodeWiFi } from '../../types/qr-code';
+import type { QRCodeWiFi } from '@/types/qr-code';
 import { QRForm, QRFormField } from './QRForm';
 
 interface WiFiFormProps {

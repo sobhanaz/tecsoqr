@@ -5,7 +5,7 @@ import {
   SimpleGrid,
   VStack,
 } from '@chakra-ui/react';
-import type { QRCodeVCard } from '../../types/qr-code';
+import type { QRCodeVCard } from '@/types/qr-code';
 import { QRForm, QRFormField } from './QRForm';
 
 interface VCardFormProps {

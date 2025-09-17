@@ -1,6 +1,6 @@
 import { Box, FormControl, FormLabel } from '@chakra-ui/react';
-import type { QRCodeContent } from '../types/qr-code';
-import { ReactNode } from 'react';
+import type { QRCodeContent } from '@/types/qr-code';
+import type { ReactNode } from 'react';
 
 interface QRFormProps<T extends QRCodeContent> {
   value: T;

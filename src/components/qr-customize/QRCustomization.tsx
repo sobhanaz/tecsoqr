@@ -13,7 +13,7 @@ import {
   useColorMode,
 } from '@chakra-ui/react';
 import { useCallback } from 'react';
-import type { QRCodeCustomization } from '../../types/qr-code';
+import type { QRCodeCustomization } from '@/types/qr-code';
 
 interface QRCustomizationProps {
   value: QRCodeCustomization;
