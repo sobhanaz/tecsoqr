@@ -1,4 +1,4 @@
-import { Container, Heading, Text, VStack } from '@chakra-ui/react';
+import { Box, Container, Heading, Text, VStack } from '@chakra-ui/react';
 import type { ReactNode } from 'react';
 
 interface PageHeaderProps {
@@ -35,17 +35,23 @@ interface PageLayoutProps {
 
 export const PageLayout = ({ children }: PageLayoutProps) => {
   return (
-    <Container
-      maxW="container.lg"
-      py={{ base: 4, md: 8 }}
-      px={{ base: 4, md: 6 }}
+    <Box
       minH="100vh"
+      w="100%"
+      bg="gray.50"
+      _dark={{ bg: 'gray.900' }}
       display="flex"
-      flexDirection="column"
       alignItems="center"
-      justifyContent="flex-start"
+      justifyContent="center"
+      py={{ base: 6, md: 12 }}
     >
-      {children}
-    </Container>
+      <Container
+        maxW="container.lg"
+        px={{ base: 4, md: 6 }}
+        centerContent
+      >
+        {children}
+      </Container>
+    </Box>
   );
 };

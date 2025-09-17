@@ -66,11 +66,12 @@ export const QRGeneratorPage = () => {
         description="Create custom QR codes for URLs, text, Wi-Fi networks, and more"
       />
 
-      <Box w="100%" maxW="container.lg">
+      <Box w="100%" maxW="container.lg" mx="auto">
         <HStack
-          spacing={{ base: 4, lg: 8 }}
+          spacing={{ base: 6, lg: 8 }}
           align="flex-start"
           flexDirection={{ base: 'column', lg: 'row' }}
+          justify="center"
         >
           {/* Left Column: Content and Customization */}
           <VStack flex="1" w="100%" spacing={4}>
@@ -133,10 +134,10 @@ export const QRGeneratorPage = () => {
 
           {/* Right Column: Preview */}
           <Box
-            flex="1"
+            flex={{ base: '1', lg: '0 0 400px' }}
             w="100%"
             position={{ base: 'relative', lg: 'sticky' }}
-            top={{ base: 0, lg: 4 }}
+            top={{ base: 0, lg: '24px' }}
           >
             <Card w="100%">
               <CardBody>
