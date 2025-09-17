@@ -33,14 +33,26 @@ export const QRPreview = ({ content, customization }: QRPreviewProps) => {
       try {
         const output: QRCodeOutput = {
           format: 'svg',
-          size,
+          size: Math.max(size, 300), // Ensure minimum size for better visibility
           margin: 4,
           errorCorrectionLevel: 'M',
         };
 
         const qrCodeData = await QRCodeService.generateQRCode(content, customization, output);
-        setQrCode(qrCodeData);
+        if (typeof qrCodeData === 'string' && qrCodeData.startsWith('<svg')) {
+          setQrCode(qrCodeData);
+        } else {
+          console.error('Invalid QR code data received:', qrCodeData);
+          toast({
+            title: 'Error generating QR code',
+            description: 'Invalid SVG data received. Please try again.',
+            status: 'error',
+            duration: 5000,
+            isClosable: true,
+          });
+        }
       } catch (error) {
+        console.error('Error generating QR code:', error);
         toast({
           title: 'Error generating QR code',
           description: 'Please check your input and try again.',

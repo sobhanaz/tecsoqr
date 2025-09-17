@@ -104,18 +104,29 @@ export class QRCodeService {
     
     try {
       if (output.format === 'svg') {
+        // Increase QR code size for better quality with rounded corners and dots
         const svg = await QRCode.toString(text, {
           type: 'svg',
-          width: output.size,
+          width: output.size * 1.2, // Increase size by 20% for better quality
           margin: output.margin,
-          errorCorrectionLevel: output.errorCorrectionLevel,
+          errorCorrectionLevel: output.errorCorrectionLevel || 'Q', // Use higher error correction for styled QR codes
           color: {
             dark: customization?.foreground || '#000000',
             light: customization?.background || '#ffffff'
           }
         });
-        // Apply corner and dot styles to the SVG
-        return modifySvgStyles(svg, customization);
+        
+        // First apply corner and dot styles
+        const modifiedSvg = modifySvgStyles(svg, customization);
+        
+        // Scale back down to requested size while preserving aspect ratio
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(modifiedSvg, 'image/svg+xml');
+        const svgElement = doc.documentElement;
+        svgElement.setAttribute('width', output.size.toString());
+        svgElement.setAttribute('height', output.size.toString());
+        
+        return svgElement.outerHTML;
       } else {
         const dataUrl = await QRCode.toDataURL(text, {
           width: output.size,
