@@ -36,10 +36,10 @@ function App() {
       <ErrorBoundary>
         <Box minH="100vh" bg="gray.50" role="main">
           <Navbar />
-          <Container py={8} role="region" aria-label="QR Code Generator">
+          <Container maxW="7xl" py={12} px={{ base: 4, md: 8 }} role="region" aria-label="QR Code Generator">
             <HStack 
               align="flex-start" 
-              spacing={8} 
+              spacing={{ base: 6, lg: 12 }}
               flexDirection={{ base: 'column', lg: 'row' }}
               role="group"
               aria-label="QR Code Generator Interface"
@@ -47,7 +47,14 @@ function App() {
               <VStack flex={1} spacing={8} align="stretch" w="100%">
                 <ContentTabs onUpdate={handleQRUpdate} />
               </VStack>
-              <Box flex={1} w="100%" role="complementary" aria-label="QR Code Preview">
+              <Box 
+                flex={1} 
+                w="100%" 
+                role="complementary" 
+                aria-label="QR Code Preview"
+                position="sticky"
+                top="24px"
+              >
                 <QRPreview {...qrData} />
               </Box>
             </HStack>

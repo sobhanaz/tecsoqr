@@ -54,10 +54,10 @@ export const QRPreview = ({ content, foregroundColor, backgroundColor, size, lev
 
   return (
     <Box 
-      p={[3, 4]} 
-      borderRadius="lg" 
+      p={6} 
+      borderRadius="xl" 
       bg="white" 
-      shadow="base" 
+      shadow="sm" 
       textAlign="center" 
       width="100%" 
       maxW="600px" 
@@ -65,9 +65,16 @@ export const QRPreview = ({ content, foregroundColor, backgroundColor, size, lev
       role="region"
       aria-label="QR Code Preview"
     >
-      <VStack spacing={4}>
+      <VStack spacing={6}>
         {content ? (
-          <Box overflow="auto" p={2}>
+          <Box 
+            overflow="hidden" 
+            p={6} 
+            bg="gray.50" 
+            borderRadius="xl"
+            border="2px dashed"
+            borderColor="gray.200"
+          >
             <QRCodeCanvas
               ref={qrRef}
               value={content}
@@ -80,24 +87,40 @@ export const QRPreview = ({ content, foregroundColor, backgroundColor, size, lev
             />
           </Box>
         ) : (
-          <Skeleton 
-            height={size} 
-            width={size}
-            startColor="gray.100" 
-            endColor="gray.300"
-            borderRadius="md"
-          />
+          <Box 
+            p={6} 
+            bg="gray.50" 
+            borderRadius="xl"
+            border="2px dashed"
+            borderColor="gray.200"
+          >
+            <Skeleton 
+              height={size} 
+              width={size}
+              startColor="gray.100" 
+              endColor="gray.300"
+              borderRadius="lg"
+            />
+          </Box>
         )}
         <Button
-          colorScheme="blue"
+          colorScheme="brand"
           onClick={downloadQRCode}
           size="lg"
-          width={["100%", "auto"]}
-          leftIcon={<DownloadIcon />}
+          width="full"
+          height="60px"
+          leftIcon={<DownloadIcon boxSize={5} />}
           isLoading={isLoading}
           isDisabled={!content}
           loadingText="Downloading..."
           aria-label="Download QR code as PNG image"
+          _hover={{
+            transform: 'translateY(-2px)',
+            shadow: 'lg'
+          }}
+          transition="all 0.2s"
+          fontWeight="bold"
+          fontSize="md"
         >
           Download QR Code
         </Button>

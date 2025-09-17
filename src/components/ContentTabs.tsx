@@ -41,12 +41,16 @@ interface ContentTabsProps {
 
 export const ContentTabs = ({ onUpdate }: ContentTabsProps) => {
   return (
-    <Box bg="white" borderRadius="lg" p={4} shadow="base">
+    <Box bg="white" borderRadius="xl" p={6} shadow="sm">
       <Tabs variant="soft-rounded" colorScheme="brand" isLazy>
         <TabList
           overflowX="auto"
           overflowY="hidden"
-          py={2}
+          py={3}
+          px={2}
+          gap={3}
+          bg="gray.50"
+          borderRadius="lg"
           sx={{
             scrollbarWidth: 'none',
             '::-webkit-scrollbar': { display: 'none' },
@@ -55,17 +59,26 @@ export const ContentTabs = ({ onUpdate }: ContentTabsProps) => {
           {contentTypes.map((type) => (
             <Tab
               key={type.id}
-              mx={1}
-              px={4}
-              py={3}
+              px={6}
+              py={4}
+              borderRadius="lg"
+              transition="all 0.2s"
               _selected={{
                 bg: 'brand.500',
                 color: 'white',
+                transform: 'translateY(-2px)',
+                shadow: 'md',
+              }}
+              _hover={{
+                bg: 'gray.100',
+                _selected: {
+                  bg: 'brand.500',
+                }
               }}
             >
-              <VStack spacing={1}>
-                <Icon as={type.icon} boxSize={5} />
-                <Text fontSize="sm" fontWeight="medium">
+              <VStack spacing={2}>
+                <Icon as={type.icon} boxSize={6} />
+                <Text fontSize="sm" fontWeight="semibold">
                   {type.label}
                 </Text>
               </VStack>

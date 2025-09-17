@@ -148,12 +148,18 @@ export const QRForm = ({ onUpdate, type }: QRFormProps) => {
   return (
     <Box>
       <FormControl 
-        mb={4} 
+        mb={6} 
         isInvalid={formData.content !== '' && !isValidInput(type, formData.content)}
         role="group"
         aria-labelledby={`${type}-label`}
       >
-        <FormLabel id={`${type}-label`}>
+        <FormLabel
+          id={`${type}-label`}
+          fontSize="lg"
+          fontWeight="semibold"
+          color="gray.700"
+          mb={2}
+        >
           {type.toUpperCase()}
         </FormLabel>
         <Input
@@ -163,6 +169,14 @@ export const QRForm = ({ onUpdate, type }: QRFormProps) => {
           placeholder={getPlaceholder(type)}
           size="lg"
           bg="white"
+          borderWidth={2}
+          _focus={{
+            borderColor: 'brand.500',
+            boxShadow: '0 0 0 1px var(--chakra-colors-brand-500)'
+          }}
+          _hover={{
+            borderColor: 'gray.400'
+          }}
           aria-label={`Enter ${type} for QR code generation`}
           aria-describedby={`${type}-helper`}
           required
@@ -177,8 +191,8 @@ export const QRForm = ({ onUpdate, type }: QRFormProps) => {
         )}
       </FormControl>
 
-      <Accordion allowMultiple defaultIndex={[0]}>
-        <AccordionItem border="none">
+      <Accordion allowMultiple defaultIndex={[0]} mt={8}>
+        <AccordionItem border="none" mb={4}>
           <AccordionButton bg="white" p={4} borderRadius="lg" mb={2}>
             <HStack flex="1" justify="space-between">
               <Text fontWeight="semibold">Set Colors</Text>
@@ -261,11 +275,19 @@ export const QRForm = ({ onUpdate, type }: QRFormProps) => {
       
       <Box mt={6}>
         <Button
-          colorScheme="blue"
+          colorScheme="brand"
           size="lg"
           width="100%"
-          leftIcon={<DownloadIcon />}
+          height="60px"
+          leftIcon={<DownloadIcon boxSize={5} />}
           isDisabled={!formData.content}
+          _hover={{
+            transform: 'translateY(-2px)',
+            shadow: 'lg'
+          }}
+          transition="all 0.2s"
+          fontWeight="bold"
+          fontSize="md"
         >
           Download QR Code
         </Button>
