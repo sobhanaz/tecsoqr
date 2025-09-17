@@ -35,12 +35,28 @@ export const QRGeneratorPage = () => {
   const [customization, setCustomization] = useState<QRCodeCustomization>(INITIAL_CUSTOMIZATION);
   const toast = useToast();
 
-  const handleContentChange = (type: QRCodeContent['type']) => (newContent: QRCodeContent) => {
+  const handleContentChange = (_: QRCodeContent['type']) => (newContent: QRCodeContent) => {
     setContent(newContent);
+    toast({
+      title: 'QR Code Updated',
+      description: 'Your QR code content has been updated.',
+      status: 'success',
+      duration: 2000,
+      isClosable: true,
+      position: 'top-right',
+    });
   };
 
   const handleCustomizationChange = (newCustomization: QRCodeCustomization) => {
     setCustomization(newCustomization);
+    toast({
+      title: 'Style Updated',
+      description: 'QR code appearance has been updated.',
+      status: 'success',
+      duration: 2000,
+      isClosable: true,
+      position: 'top-right',
+    });
   };
 
   return (
