@@ -5,6 +5,8 @@ import {
   Input,
   FormControl,
   FormLabel,
+  FormHelperText,
+  FormErrorMessage,
   SimpleGrid,
   Select,
   Accordion,
@@ -29,6 +31,57 @@ export interface QRCodeData {
   size: number;
   level: 'L' | 'M' | 'Q' | 'H';
 }
+
+const isValidInput = (type: string, content: string): boolean => {
+  switch (type) {
+    case 'url':
+      try {
+        new URL(content.startsWith('http') ? content : `https://${content}`);
+        return true;
+      } catch {
+        return false;
+      }
+    case 'email':
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(content);
+    case 'phone':
+      return /^\+?[\d\s-]{6,}$/.test(content);
+    case 'wifi':
+      const [ssid] = content.split(',');
+      return ssid.length > 0;
+    default:
+      return content.length > 0;
+  }
+};
+
+const getErrorMessage = (type: string, content: string): string => {
+  switch (type) {
+    case 'url':
+      return 'Please enter a valid URL';
+    case 'email':
+      return 'Please enter a valid email address';
+    case 'phone':
+      return 'Please enter a valid phone number';
+    case 'wifi':
+      return 'Please enter a valid WiFi SSID';
+    default:
+      return 'This field is required';
+  }
+};
+
+const getInputHelper = (type: string): string => {
+  switch (type) {
+    case 'url':
+      return 'Enter a website URL (e.g., https://example.com)';
+    case 'email':
+      return 'Enter a valid email address';
+    case 'phone':
+      return 'Enter a phone number with country code';
+    case 'wifi':
+      return 'Enter WiFi SSID and password, separated by comma';
+    default:
+      return 'Enter the content for your QR code';
+  }
+};
 
 const getPlaceholder = (type: string) => {
   switch (type) {
@@ -94,8 +147,15 @@ export const QRForm = ({ onUpdate, type }: QRFormProps) => {
 
   return (
     <Box>
-      <FormControl mb={4}>
-        <FormLabel>{type.toUpperCase()}</FormLabel>
+      <FormControl 
+        mb={4} 
+        isInvalid={formData.content !== '' && !isValidInput(type, formData.content)}
+        role="group"
+        aria-labelledby={`${type}-label`}
+      >
+        <FormLabel id={`${type}-label`}>
+          {type.toUpperCase()}
+        </FormLabel>
         <Input
           name="content"
           value={formData.content}
@@ -103,7 +163,18 @@ export const QRForm = ({ onUpdate, type }: QRFormProps) => {
           placeholder={getPlaceholder(type)}
           size="lg"
           bg="white"
+          aria-label={`Enter ${type} for QR code generation`}
+          aria-describedby={`${type}-helper`}
+          required
         />
+        <FormHelperText id={`${type}-helper`}>
+          {getInputHelper(type)}
+        </FormHelperText>
+        {formData.content !== '' && !isValidInput(type, formData.content) && (
+          <FormErrorMessage>
+            {getErrorMessage(type, formData.content)}
+          </FormErrorMessage>
+        )}
       </FormControl>
 
       <Accordion allowMultiple defaultIndex={[0]}>
