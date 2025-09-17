@@ -1,0 +1,138 @@
+import {
+  Box,
+  Card,
+  CardBody,
+  HStack,
+  Tab,
+  TabList,
+  TabPanel,
+  TabPanels,
+  Tabs,
+  VStack,
+  useToast,
+} from '@chakra-ui/react';
+import { useState } from 'react';
+import type { QRCodeContent, QRCodeCustomization } from '@/types/qr-code';
+import { URLForm, TextForm, WiFiForm, VCardForm, EmailForm } from '@/components/qr-forms';
+import { QRCustomization } from '@/components/qr-customize';
+import { QRPreview } from '@/components/qr-preview';
+import { PageHeader, PageLayout } from '@/components/ui/Layout';
+
+const INITIAL_QR_CONTENT: QRCodeContent = {
+  type: 'url',
+  url: '',
+};
+
+const INITIAL_CUSTOMIZATION: QRCodeCustomization = {
+  foreground: '#000000',
+  background: '#FFFFFF',
+  cornerStyle: 'square',
+  dotStyle: 'square',
+};
+
+export const QRGeneratorPage = () => {
+  const [content, setContent] = useState<QRCodeContent>(INITIAL_QR_CONTENT);
+  const [customization, setCustomization] = useState<QRCodeCustomization>(INITIAL_CUSTOMIZATION);
+  const toast = useToast();
+
+  const handleContentChange = (type: QRCodeContent['type']) => (newContent: QRCodeContent) => {
+    setContent(newContent);
+  };
+
+  const handleCustomizationChange = (newCustomization: QRCodeCustomization) => {
+    setCustomization(newCustomization);
+  };
+
+  return (
+    <PageLayout>
+      <PageHeader
+        title="QR Code Generator"
+        description="Create custom QR codes for URLs, text, Wi-Fi networks, and more"
+      />
+
+      <Box w="100%" maxW="container.lg">
+        <HStack
+          spacing={{ base: 4, lg: 8 }}
+          align="flex-start"
+          flexDirection={{ base: 'column', lg: 'row' }}
+        >
+          {/* Left Column: Content and Customization */}
+          <VStack flex="1" w="100%" spacing={4}>
+            <Card w="100%">
+              <CardBody>
+                <Tabs isLazy variant="enclosed">
+                  <TabList>
+                    <Tab>URL</Tab>
+                    <Tab>Text</Tab>
+                    <Tab>Wi-Fi</Tab>
+                    <Tab>vCard</Tab>
+                    <Tab>Email</Tab>
+                  </TabList>
+
+                  <TabPanels>
+                    <TabPanel>
+                      <URLForm
+                        value={content as any}
+                        onChange={handleContentChange('url')}
+                      />
+                    </TabPanel>
+                    <TabPanel>
+                      <TextForm
+                        value={content as any}
+                        onChange={handleContentChange('text')}
+                      />
+                    </TabPanel>
+                    <TabPanel>
+                      <WiFiForm
+                        value={content as any}
+                        onChange={handleContentChange('wifi')}
+                      />
+                    </TabPanel>
+                    <TabPanel>
+                      <VCardForm
+                        value={content as any}
+                        onChange={handleContentChange('vcard')}
+                      />
+                    </TabPanel>
+                    <TabPanel>
+                      <EmailForm
+                        value={content as any}
+                        onChange={handleContentChange('email')}
+                      />
+                    </TabPanel>
+                  </TabPanels>
+                </Tabs>
+              </CardBody>
+            </Card>
+
+            <Card w="100%">
+              <CardBody>
+                <QRCustomization
+                  value={customization}
+                  onChange={handleCustomizationChange}
+                />
+              </CardBody>
+            </Card>
+          </VStack>
+
+          {/* Right Column: Preview */}
+          <Box
+            flex="1"
+            w="100%"
+            position={{ base: 'relative', lg: 'sticky' }}
+            top={{ base: 0, lg: 4 }}
+          >
+            <Card w="100%">
+              <CardBody>
+                <QRPreview
+                  content={content}
+                  customization={customization}
+                />
+              </CardBody>
+            </Card>
+          </Box>
+        </HStack>
+      </Box>
+    </PageLayout>
+  );
+};
