@@ -28,7 +28,14 @@ export const Navbar = () => {
         <Flex justify="space-between" align="center">
           <HStack spacing={8}>
             <Box>
-              <Image h="40px" src="../assets/logo.svg" alt="TECSOQR" />
+              <Image 
+                h="40px" 
+                src="/src/assets/logo.svg" 
+                alt="TECSOQR" 
+                filter={colorMode === 'dark' ? 'invert(1)' : 'none'}
+                _dark={{ filter: 'invert(1)' }}
+                aria-label="TECSOQR Logo"
+              />
             </Box>
             <HStack spacing={4} display={{ base: 'none', md: 'flex' }}>
               <Button variant="ghost">ABOUT</Button>
