@@ -1,6 +1,6 @@
 import QRCode from 'qrcode';
 import type { QRCodeContent, QRCodeCustomization, QRCodeOutput, QRCodeVCard, QRCodeWiFi } from '@/types/qr-code';
-import { modifySvgStyles } from '@/utils/svg-modifier';
+import modifySvgStyles from '@/utils/svg-modifier';
 
 export class QRCodeService {
   private static encodeVCard(vcard: QRCodeVCard): string {
@@ -96,6 +96,12 @@ export class QRCodeService {
     }
   ): Promise<string> {
     const text = this.formatContent(content);
+    
+    // Validate that we have content to encode
+    if (!text || text.trim() === '') {
+      throw new Error('No input text');
+    }
+    
     try {
       if (output.format === 'svg') {
         const svg = await QRCode.toString(text, {
@@ -124,6 +130,9 @@ export class QRCodeService {
       }
     } catch (error) {
       console.error('Error generating QR code:', error);
+      if (error instanceof Error) {
+        throw error;
+      }
       throw new Error('Failed to generate QR code');
     }
   }

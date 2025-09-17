@@ -20,7 +20,7 @@ import { PageHeader, PageLayout } from '@/components/ui/Layout';
 
 const INITIAL_QR_CONTENT: QRCodeContent = {
   type: 'url',
-  url: '',
+  url: 'https://',
 };
 
 const INITIAL_CUSTOMIZATION: QRCodeCustomization = {
