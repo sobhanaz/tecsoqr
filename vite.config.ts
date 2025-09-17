@@ -29,7 +29,7 @@ export default defineConfig({
       }
     })
   ],
-  base: '/',
+  base: '/tecsoqr/',
   build: {
     outDir: 'dist',
     assetsDir: 'assets',
