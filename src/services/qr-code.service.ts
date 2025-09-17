@@ -104,30 +104,32 @@ export class QRCodeService {
     
     try {
       if (output.format === 'svg') {
-        // Increase QR code size for better quality with rounded corners and dots
+        // Generate SVG with higher resolution for better styling
         const svg = await QRCode.toString(text, {
           type: 'svg',
-          width: output.size * 1.2, // Increase size by 20% for better quality
-          margin: output.margin,
-          errorCorrectionLevel: output.errorCorrectionLevel || 'Q', // Use higher error correction for styled QR codes
+          width: output.size,
+          margin: 2, // Keep margin small for better styling control
+          errorCorrectionLevel: 'Q', // Higher error correction for better reliability
           color: {
-            dark: customization?.foreground || '#000000',
-            light: customization?.background || '#ffffff'
+            dark: 'currentColor',
+            light: '#0000' // Transparent background
           }
         });
         
-        // First apply corner and dot styles
+        // Apply styles
         const modifiedSvg = modifySvgStyles(svg, customization);
         
-        // Scale back down to requested size while preserving aspect ratio
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(modifiedSvg, 'image/svg+xml');
-        const svgElement = doc.documentElement;
-        svgElement.setAttribute('width', output.size.toString());
-        svgElement.setAttribute('height', output.size.toString());
+        // Add wrapper SVG with background and foreground color handling
+        const color = customization?.foreground || '#000000';
+        const bgColor = customization?.background || '#ffffff';
         
-        return svgElement.outerHTML;
+        return `<svg viewBox="0 0 ${output.size} ${output.size}" 
+          width="${output.size}" height="${output.size}" 
+          style="color: ${color}; background-color: ${bgColor}">
+          ${modifiedSvg}
+        </svg>`;
       } else {
+        // For non-SVG formats, use regular QR code generation
         const dataUrl = await QRCode.toDataURL(text, {
           width: output.size,
           margin: output.margin,
