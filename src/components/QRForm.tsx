@@ -53,7 +53,7 @@ const isValidInput = (type: string, content: string): boolean => {
   }
 };
 
-const getErrorMessage = (type: string, content: string): string => {
+const getErrorMessage = (type: string): string => {
   switch (type) {
     case 'url':
       return 'Please enter a valid URL';
@@ -172,7 +172,7 @@ export const QRForm = ({ onUpdate, type }: QRFormProps) => {
         </FormHelperText>
         {formData.content !== '' && !isValidInput(type, formData.content) && (
           <FormErrorMessage>
-            {getErrorMessage(type, formData.content)}
+            {getErrorMessage(type)}
           </FormErrorMessage>
         )}
       </FormControl>

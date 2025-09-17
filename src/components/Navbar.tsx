@@ -30,7 +30,7 @@ export const Navbar = () => {
             <Box>
               <Image 
                 h="40px" 
-                src="/src/assets/logo.svg" 
+                src={import.meta.env.BASE_URL + 'assets/logo.svg'} 
                 alt="TECSOQR" 
                 filter={colorMode === 'dark' ? 'invert(1)' : 'none'}
                 _dark={{ filter: 'invert(1)' }}
