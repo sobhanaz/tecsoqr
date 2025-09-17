@@ -1,5 +1,6 @@
 import QRCode from 'qrcode';
 import type { QRCodeContent, QRCodeCustomization, QRCodeOutput, QRCodeVCard, QRCodeWiFi } from '@/types/qr-code';
+import { modifySvgStyles } from '@/utils/svg-modifier';
 
 export class QRCodeService {
   private static encodeVCard(vcard: QRCodeVCard): string {
@@ -97,7 +98,7 @@ export class QRCodeService {
     const text = this.formatContent(content);
     try {
       if (output.format === 'svg') {
-        return await QRCode.toString(text, {
+        const svg = await QRCode.toString(text, {
           type: 'svg',
           width: output.size,
           margin: output.margin,
@@ -107,6 +108,8 @@ export class QRCodeService {
             light: customization?.background || '#ffffff'
           }
         });
+        // Apply corner and dot styles to the SVG
+        return modifySvgStyles(svg, customization);
       } else {
         const dataUrl = await QRCode.toDataURL(text, {
           width: output.size,
