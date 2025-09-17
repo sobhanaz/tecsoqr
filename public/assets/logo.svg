@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="250" height="40" viewBox="0 0 250 40" version="1.1" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    .logo-text { font-family: Arial, sans-serif; font-weight: bold; font-size: 24px; }
+  </style>
+  <text x="10" y="30" class="logo-text" fill="currentColor">TECSOQR</text>
+</svg>
