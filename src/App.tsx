@@ -1,4 +1,4 @@
-import { ChakraProvider, Box } from "@chakra-ui/react";
+import { ChakraProvider } from "@chakra-ui/react";
 import theme from "./theme";
 import { QRGeneratorPage } from "./pages/QRGeneratorPage";
 import { ErrorBoundary } from "./components/ErrorBoundary";
