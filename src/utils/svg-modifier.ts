@@ -1,61 +1,97 @@
 const modifySvgStyles = (
   svg: string,
-  customization?: { cornerStyle?: 'square' | 'rounded' | 'dots'; dotStyle?: 'square' | 'rounded' | 'dots' }
+  customization?: {
+    cornerStyle?: "square" | "rounded" | "dots";
+    dotStyle?: "square" | "rounded" | "dots";
+  }
 ) => {
   if (!customization?.cornerStyle && !customization?.dotStyle) return svg;
 
-  // Replace the path with rect elements that support rounding
+  // Calculate QR code parameters
+  const viewBoxMatch = svg.match(/viewBox="0 0 (\d+) \d+"/);
+  const size = parseInt(viewBoxMatch?.[1] || "0", 10);
+  if (!size) return svg;
+
+  // Standard QR code is 33x33 including quiet zone
+  const moduleCount = 33;
+  const moduleSize = size / moduleCount;
+  const spacing = moduleSize * 0.1; // 10% spacing between modules
+
+  // Parse SVG and prepare for modification
   let modifiedSvg = svg;
   const pathRegex = /<path\s+d="([^"]+)"\s*[^>]*>/g;
   const paths = Array.from(svg.matchAll(pathRegex));
-  
+
   paths.forEach((pathMatch) => {
     const originalPath = pathMatch[0];
     const pathD = pathMatch[1];
-    
-    // Parse the path data to extract position and size
-    const numbers = pathD.match(/-?\d+(\.\d+)?/g)?.map(Number) || [];
-    if (numbers.length < 4) return;
-    
-    const [x, y] = numbers;
-    const width = Math.abs(numbers[2] - x) || Math.abs(numbers[4] - x) || 1;
-    const height = Math.abs(numbers[3] - y) || Math.abs(numbers[5] - y) || 1;
-    
-    // Determine if this is a corner or regular dot
-    const isCorner = x === 0 || y === 0 || x >= width * 7 || y >= height * 7;
+
+    // Extract coordinates from path data
+    const coords = pathD.match(/-?\d+(\.\d+)?/g)?.map(Number) || [];
+    if (coords.length < 4) return;
+
+    const [x, y] = coords;
+    const width =
+      Math.abs(coords[2] - x) || Math.abs(coords[4] - x) || moduleSize;
+    const height =
+      Math.abs(coords[3] - y) || Math.abs(coords[5] - y) || moduleSize;
+
+    // Detect corner modules (improved detection)
+    const isCorner =
+      (x <= moduleSize * 2 && y <= moduleSize * 2) || // Top-left
+      (x >= size - moduleSize * 4 && y <= moduleSize * 2) || // Top-right
+      (x <= moduleSize * 2 && y >= size - moduleSize * 4) || // Bottom-left
+      (x >= size - moduleSize * 4 && y >= size - moduleSize * 4); // Bottom-right
+
     const style = isCorner ? customization.cornerStyle : customization.dotStyle;
-    
-    let rx = 0, ry = 0;
-    let scale = 1;
-    
+
+    // Apply styles with improved calculations
+    let rx = 0,
+      ry = 0;
+    let shrinkFactor = 1;
+
     switch (style) {
-      case 'rounded':
-        rx = ry = Math.min(width, height) * (isCorner ? 0.3 : 0.15);
+      case "rounded":
+        rx = ry = moduleSize * (isCorner ? 0.3 : 0.2);
+        shrinkFactor = isCorner ? 0.95 : 0.9;
         break;
-      case 'dots':
-        rx = ry = Math.min(width, height) * (isCorner ? 0.5 : 0.4);
-        scale = 0.8; // Make dots slightly smaller
+      case "dots":
+        rx = ry = moduleSize * 0.5; // Make all dots circular
+        shrinkFactor = isCorner ? 0.85 : 0.8;
         break;
       default: // 'square'
         rx = ry = 0;
+        shrinkFactor = 1;
         break;
     }
-    
-    // Create rect element with rounded corners
-    const centerX = x + width / 2;
-    const centerY = y + height / 2;
-    const scaledWidth = width * scale;
-    const scaledHeight = height * scale;
-    const adjustedX = centerX - scaledWidth / 2;
-    const adjustedY = centerY - scaledHeight / 2;
-    
-    const rect = `<rect x="${adjustedX}" y="${adjustedY}" width="${scaledWidth}" height="${scaledHeight}" 
-      rx="${rx}" ry="${ry}" fill="currentColor"/>`;
-    
+
+    // Calculate final dimensions with spacing and shrink factor
+    const finalWidth = width * shrinkFactor - spacing * 2;
+    const finalHeight = height * shrinkFactor - spacing * 2;
+    const finalX = x + (width - finalWidth) / 2;
+    const finalY = y + (height - finalHeight) / 2;
+
+    // Create rect element with calculated attributes
+    const rect = `<rect 
+      x="${finalX}" 
+      y="${finalY}" 
+      width="${finalWidth}" 
+      height="${finalHeight}" 
+      rx="${rx}" 
+      ry="${ry}" 
+      fill="currentColor"
+    />`
+      .replace(/\s+/g, " ")
+      .trim();
+
     modifiedSvg = modifiedSvg.replace(originalPath, rect);
   });
-  
-  return modifiedSvg.replace(/fill="[^"]*"/g, 'fill="currentColor"');
+
+  // Ensure consistent color handling
+  return modifiedSvg
+    .replace(/fill="[^"]*"/g, 'fill="currentColor"')
+    .replace(/>\s+</g, "><")
+    .trim();
 };
 
 export default modifySvgStyles;
