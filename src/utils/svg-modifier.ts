@@ -49,25 +49,35 @@ const modifySvgStyles = (
     let rx = 0,
       ry = 0;
     let shrinkFactor = 1;
+    let finalWidth = width;
+    let finalHeight = height;
 
     switch (style) {
-      case "rounded":
-        rx = ry = moduleSize * (isCorner ? 0.3 : 0.2);
-        shrinkFactor = isCorner ? 0.95 : 0.9;
+      case "rounded": {
+        // Use consistent rounding radius
+        rx = ry = Math.min(width, height) * (isCorner ? 0.25 : 0.2);
+        shrinkFactor = isCorner ? 0.95 : 0.92;
+        finalWidth = width * shrinkFactor - spacing * 2;
+        finalHeight = height * shrinkFactor - spacing * 2;
         break;
-      case "dots":
-        rx = ry = moduleSize * 0.5; // Make all dots circular
-        shrinkFactor = isCorner ? 0.85 : 0.8;
+      }
+      case "dots": {
+        // Ensure perfect circles with equal width/height
+        const size = Math.min(width, height) * (isCorner ? 0.9 : 0.85);
+        finalWidth = finalHeight = size - spacing * 2;
+        rx = ry = size / 2;
         break;
-      default: // 'square'
+      }
+      default: {
+        // 'square'
         rx = ry = 0;
-        shrinkFactor = 1;
+        finalWidth = width - spacing * 2;
+        finalHeight = height - spacing * 2;
         break;
+      }
     }
 
-    // Calculate final dimensions with spacing and shrink factor
-    const finalWidth = width * shrinkFactor - spacing * 2;
-    const finalHeight = height * shrinkFactor - spacing * 2;
+    // Calculate final position to center the shape
     const finalX = x + (width - finalWidth) / 2;
     const finalY = y + (height - finalHeight) / 2;
 
