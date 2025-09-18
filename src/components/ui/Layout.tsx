@@ -37,15 +37,25 @@ export const PageLayout = ({ children }: PageLayoutProps) => {
   return (
     <Box
       minH="100vh"
+      h="100%"
       w="100%"
       bg="gray.50"
       _dark={{ bg: "gray.900" }}
       display="flex"
+      flexDirection="column"
       alignItems="center"
-      justifyContent="center"
-      py={{ base: 6, md: 12 }}
+      overflow="auto"
     >
-      <Container maxW="container.lg" px={{ base: 4, md: 6 }} centerContent>
+      <Container
+        flex="1"
+        maxW="container.lg"
+        px={{ base: 4, md: 6 }}
+        py={{ base: 4, md: 6 }}
+        display="flex"
+        flexDirection="column"
+        alignItems="center"
+        width="100%"
+      >
         {children}
       </Container>
     </Box>

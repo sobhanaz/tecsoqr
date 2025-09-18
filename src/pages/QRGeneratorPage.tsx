@@ -75,12 +75,20 @@ export const QRGeneratorPage = () => {
         description="Create custom QR codes for URLs, text, Wi-Fi networks, and more"
       />
 
-      <Box w="100%" maxW="container.lg" mx="auto">
+      <Box
+        w="100%"
+        maxW="container.lg"
+        mx="auto"
+        flex="1"
+        display="flex"
+        flexDirection="column"
+      >
         <HStack
           spacing={{ base: 6, lg: 8 }}
           align="flex-start"
           flexDirection={{ base: "column", lg: "row" }}
           justify="center"
+          flex="1"
         >
           {/* Left Column: Content and Customization */}
           <VStack flex="1" w="100%" spacing={4}>
