@@ -1,12 +1,18 @@
-import QRCode from 'qrcode';
-import type { QRCodeContent, QRCodeCustomization, QRCodeOutput, QRCodeVCard, QRCodeWiFi } from '@/types/qr-code';
-import modifySvgStyles from '@/utils/svg-modifier';
+import QRCode from "qrcode";
+import type {
+  QRCodeContent,
+  QRCodeCustomization,
+  QRCodeOutput,
+  QRCodeVCard,
+  QRCodeWiFi,
+} from "@/types/qr-code";
+import modifySvgStyles from "@/utils/svg-modifier";
 
 export class QRCodeService {
   private static encodeVCard(vcard: QRCodeVCard): string {
     const fields = [
-      'BEGIN:VCARD',
-      'VERSION:3.0',
+      "BEGIN:VCARD",
+      "VERSION:3.0",
       `N:${vcard.lastName};${vcard.firstName}`,
       `FN:${vcard.firstName} ${vcard.lastName}`,
       vcard.organization && `ORG:${vcard.organization}`,
@@ -18,70 +24,93 @@ export class QRCodeService {
       vcard.homeFax && `TEL;TYPE=HOME,FAX:${vcard.homeFax}`,
       vcard.email && `EMAIL:${vcard.email}`,
       vcard.website && `URL:${vcard.website}`,
-      vcard.street && vcard.city && `ADR:;;${vcard.street};${vcard.city};${vcard.state || ''};${vcard.zipCode || ''};${vcard.country || ''}`,
-      'END:VCARD'
-    ].filter(Boolean).join('\\n');
+      vcard.street &&
+        vcard.city &&
+        `ADR:;;${vcard.street};${vcard.city};${vcard.state || ""};${
+          vcard.zipCode || ""
+        };${vcard.country || ""}`,
+      "END:VCARD",
+    ]
+      .filter(Boolean)
+      .join("\\n");
 
     return fields;
   }
 
   private static encodeWiFi(wifi: QRCodeWiFi): string {
     const fields = [
-      'WIFI:',
+      "WIFI:",
       `T:${wifi.encryption}`,
       `S:${wifi.ssid}`,
       wifi.password && `P:${wifi.password}`,
-      wifi.hidden ? 'H:true' : undefined
-    ].filter(Boolean).join(';');
+      wifi.hidden ? "H:true" : undefined,
+    ]
+      .filter(Boolean)
+      .join(";");
 
-    return fields + ';';
+    return fields + ";";
   }
 
   private static formatContent(content: QRCodeContent): string {
     switch (content.type) {
-      case 'url':
+      case "url":
         return content.url;
-      case 'text':
+      case "text":
         return content.text;
-      case 'email':
+      case "email": {
         const emailParts = [
-          'mailto:' + content.email,
-          content.subject && 'subject=' + encodeURIComponent(content.subject),
-          content.body && 'body=' + encodeURIComponent(content.body)
+          "mailto:" + content.email,
+          content.subject && "subject=" + encodeURIComponent(content.subject),
+          content.body && "body=" + encodeURIComponent(content.body),
         ].filter(Boolean);
-        return emailParts.join('?');
-      case 'phone':
-        return 'tel:' + content.number;
-      case 'sms':
-        return `smsto:${content.number}${content.message ? ':' + content.message : ''}`;
-      case 'vcard':
+        return emailParts.join("?");
+      }
+      case "phone":
+        return "tel:" + content.number;
+      case "sms":
+        return `smsto:${content.number}${
+          content.message ? ":" + content.message : ""
+        }`;
+      case "vcard":
         return this.encodeVCard(content);
-      case 'mecard':
-        return `MECARD:N:${content.name};TEL:${content.phone || ''};EMAIL:${content.email || ''};URL:${content.website || ''};ADR:${content.address || ''};`;
-      case 'location':
-        return `geo:${content.latitude},${content.longitude}${content.name ? '?q=' + encodeURIComponent(content.name) : ''}`;
-      case 'wifi':
+      case "mecard":
+        return `MECARD:N:${content.name};TEL:${content.phone || ""};EMAIL:${
+          content.email || ""
+        };URL:${content.website || ""};ADR:${content.address || ""};`;
+      case "location":
+        return `geo:${content.latitude},${content.longitude}${
+          content.name ? "?q=" + encodeURIComponent(content.name) : ""
+        }`;
+      case "wifi":
         return this.encodeWiFi(content);
-      case 'event':
+      case "event":
         return [
-          'BEGIN:VEVENT',
+          "BEGIN:VEVENT",
           `SUMMARY:${content.title}`,
           content.description && `DESCRIPTION:${content.description}`,
           content.location && `LOCATION:${content.location}`,
           `DTSTART:${content.startDate.toISOString()}`,
           content.endDate && `DTEND:${content.endDate.toISOString()}`,
-          'END:VEVENT'
-        ].filter(Boolean).join('\\n');
-      case 'bitcoin':
-        return `bitcoin:${content.address}${content.amount ? '?amount=' + content.amount : ''}${content.label ? '&label=' + encodeURIComponent(content.label) : ''}${content.message ? '&message=' + encodeURIComponent(content.message) : ''}`;
-      case 'facebook':
-        return 'https://facebook.com/' + content.username;
-      case 'twitter':
-        return 'https://twitter.com/' + content.username;
-      case 'youtube':
-        return 'https://youtube.com/' + content.username;
+          "END:VEVENT",
+        ]
+          .filter(Boolean)
+          .join("\\n");
+      case "bitcoin":
+        return `bitcoin:${content.address}${
+          content.amount ? "?amount=" + content.amount : ""
+        }${content.label ? "&label=" + encodeURIComponent(content.label) : ""}${
+          content.message
+            ? "&message=" + encodeURIComponent(content.message)
+            : ""
+        }`;
+      case "facebook":
+        return "https://facebook.com/" + content.username;
+      case "twitter":
+        return "https://twitter.com/" + content.username;
+      case "youtube":
+        return "https://youtube.com/" + content.username;
       default:
-        throw new Error('Unsupported QR code type');
+        throw new Error("Unsupported QR code type");
     }
   }
 
@@ -89,40 +118,40 @@ export class QRCodeService {
     content: QRCodeContent,
     customization?: QRCodeCustomization,
     output: QRCodeOutput = {
-      format: 'svg',
+      format: "svg",
       size: 1000,
       margin: 4,
-      errorCorrectionLevel: 'M'
+      errorCorrectionLevel: "M",
     }
   ): Promise<string> {
     const text = this.formatContent(content);
-    
+
     // Validate that we have content to encode
-    if (!text || text.trim() === '') {
-      throw new Error('No input text');
+    if (!text || text.trim() === "") {
+      throw new Error("No input text");
     }
-    
+
     try {
-      if (output.format === 'svg') {
+      if (output.format === "svg") {
         // Generate SVG with higher resolution for better styling
         const svg = await QRCode.toString(text, {
-          type: 'svg',
+          type: "svg",
           width: output.size,
           margin: 2, // Keep margin small for better styling control
-          errorCorrectionLevel: 'Q', // Higher error correction for better reliability
+          errorCorrectionLevel: "Q", // Higher error correction for better reliability
           color: {
-            dark: 'currentColor',
-            light: '#0000' // Transparent background
-          }
+            dark: "#000000", // Use black initially, will be overridden by currentColor
+            light: "#0000", // Transparent background
+          },
         });
-        
+
         // Apply styles
         const modifiedSvg = modifySvgStyles(svg, customization);
-        
+
         // Add wrapper SVG with background and foreground color handling
-        const color = customization?.foreground || '#000000';
-        const bgColor = customization?.background || '#ffffff';
-        
+        const color = customization?.foreground || "#000000";
+        const bgColor = customization?.background || "#ffffff";
+
         return `<svg viewBox="0 0 ${output.size} ${output.size}" 
           width="${output.size}" height="${output.size}" 
           style="color: ${color}; background-color: ${bgColor}">
@@ -135,18 +164,18 @@ export class QRCodeService {
           margin: output.margin,
           errorCorrectionLevel: output.errorCorrectionLevel,
           color: {
-            dark: customization?.foreground || '#000000',
-            light: customization?.background || '#ffffff'
-          }
+            dark: customization?.foreground || "#000000",
+            light: customization?.background || "#ffffff",
+          },
         });
         return dataUrl;
       }
     } catch (error) {
-      console.error('Error generating QR code:', error);
+      console.error("Error generating QR code:", error);
       if (error instanceof Error) {
         throw error;
       }
-      throw new Error('Failed to generate QR code');
+      throw new Error("Failed to generate QR code");
     }
   }
 }
