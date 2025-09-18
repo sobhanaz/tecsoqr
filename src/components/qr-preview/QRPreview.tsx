@@ -4,7 +4,6 @@ import {
   ButtonGroup,
   Center,
   HStack,
-
   Slider,
   SliderFilledTrack,
   SliderThumb,
@@ -12,11 +11,15 @@ import {
   Text,
   VStack,
   useToast,
-} from '@chakra-ui/react';
-import { useEffect, useState } from 'react';
-import type { QRCodeContent, QRCodeCustomization, QRCodeOutput } from '@/types/qr-code';
-import { QRCodeService } from '@/services/qr-code.service';
-import { DownloadIcon } from '@chakra-ui/icons';
+} from "@chakra-ui/react";
+import { useEffect, useState } from "react";
+import type {
+  QRCodeContent,
+  QRCodeCustomization,
+  QRCodeOutput,
+} from "@/types/qr-code";
+import { QRCodeService } from "@/services/qr-code.service";
+import { DownloadIcon } from "@chakra-ui/icons";
 
 interface QRPreviewProps {
   content: QRCodeContent;
@@ -24,7 +27,7 @@ interface QRPreviewProps {
 }
 
 export const QRPreview = ({ content, customization }: QRPreviewProps) => {
-  const [qrCode, setQrCode] = useState<string>('');
+  const [qrCode, setQrCode] = useState<string>("");
   const [size, setSize] = useState<number>(300);
   const toast = useToast();
 
@@ -32,31 +35,35 @@ export const QRPreview = ({ content, customization }: QRPreviewProps) => {
     const generateQRCode = async () => {
       try {
         const output: QRCodeOutput = {
-          format: 'svg',
+          format: "svg",
           size: Math.max(size, 300), // Ensure minimum size for better visibility
           margin: 4,
-          errorCorrectionLevel: 'M',
+          errorCorrectionLevel: "M",
         };
 
-        const qrCodeData = await QRCodeService.generateQRCode(content, customization, output);
-        if (typeof qrCodeData === 'string' && qrCodeData.startsWith('<svg')) {
+        const qrCodeData = await QRCodeService.generateQRCode(
+          content,
+          customization,
+          output
+        );
+        if (typeof qrCodeData === "string" && qrCodeData.startsWith("<svg")) {
           setQrCode(qrCodeData);
         } else {
-          console.error('Invalid QR code data received:', qrCodeData);
+          console.error("Invalid QR code data received:", qrCodeData);
           toast({
-            title: 'Error generating QR code',
-            description: 'Invalid SVG data received. Please try again.',
-            status: 'error',
+            title: "Error generating QR code",
+            description: "Invalid SVG data received. Please try again.",
+            status: "error",
             duration: 5000,
             isClosable: true,
           });
         }
       } catch (error) {
-        console.error('Error generating QR code:', error);
+        console.error("Error generating QR code:", error);
         toast({
-          title: 'Error generating QR code',
-          description: 'Please check your input and try again.',
-          status: 'error',
+          title: "Error generating QR code",
+          description: "Please check your input and try again.",
+          status: "error",
           duration: 5000,
           isClosable: true,
         });
@@ -66,23 +73,27 @@ export const QRPreview = ({ content, customization }: QRPreviewProps) => {
     generateQRCode();
   }, [content, customization, size, toast]);
 
-  const handleDownload = async (format: QRCodeOutput['format']) => {
+  const handleDownload = async (format: QRCodeOutput["format"]) => {
     try {
       const output: QRCodeOutput = {
         format,
         size: Math.max(size, 1000), // Use higher resolution for downloads
         margin: 4,
-        errorCorrectionLevel: 'M',
+        errorCorrectionLevel: "M",
       };
 
-      const qrCodeData = await QRCodeService.generateQRCode(content, customization, output);
-      
+      const qrCodeData = await QRCodeService.generateQRCode(
+        content,
+        customization,
+        output
+      );
+
       // Create a download link
-      const link = document.createElement('a');
+      const link = document.createElement("a");
       const fileName = `qrcode.${format}`;
 
-      if (format === 'svg') {
-        const blob = new Blob([qrCodeData], { type: 'image/svg+xml' });
+      if (format === "svg") {
+        const blob = new Blob([qrCodeData], { type: "image/svg+xml" });
         link.href = URL.createObjectURL(blob);
       } else {
         link.href = qrCodeData;
@@ -94,15 +105,15 @@ export const QRPreview = ({ content, customization }: QRPreviewProps) => {
       document.body.removeChild(link);
 
       toast({
-        title: 'QR code downloaded',
-        status: 'success',
+        title: "QR code downloaded",
+        status: "success",
         duration: 3000,
       });
     } catch (error) {
       toast({
-        title: 'Error downloading QR code',
-        description: 'Please try again.',
-        status: 'error',
+        title: "Error downloading QR code",
+        description: "Please try again.",
+        status: "error",
         duration: 5000,
         isClosable: true,
       });
@@ -110,21 +121,31 @@ export const QRPreview = ({ content, customization }: QRPreviewProps) => {
   };
 
   return (
-    <Box p={4} bg="white" borderRadius="md" shadow="sm" _dark={{ bg: 'gray.800' }}>
+    <Box
+      p={4}
+      bg="white"
+      borderRadius="md"
+      shadow="sm"
+      _dark={{ bg: "gray.800" }}
+    >
       <VStack spacing={6}>
         <Center
           w="100%"
           h={`${size}px`}
           position="relative"
           bg="gray.50"
-          _dark={{ bg: 'gray.700' }}
+          _dark={{ bg: "gray.700" }}
           borderRadius="md"
+          overflow="hidden"
         >
           {qrCode ? (
             <Box
               dangerouslySetInnerHTML={{ __html: qrCode }}
               w={`${size}px`}
               h={`${size}px`}
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
             />
           ) : (
             <Text>Generating QR code...</Text>
@@ -157,13 +178,13 @@ export const QRPreview = ({ content, customization }: QRPreviewProps) => {
           <ButtonGroup variant="outline" spacing={4}>
             <Button
               leftIcon={<DownloadIcon />}
-              onClick={() => handleDownload('svg')}
+              onClick={() => handleDownload("svg")}
             >
               SVG
             </Button>
             <Button
               leftIcon={<DownloadIcon />}
-              onClick={() => handleDownload('png')}
+              onClick={() => handleDownload("png")}
             >
               PNG
             </Button>
