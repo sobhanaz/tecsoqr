@@ -32,8 +32,6 @@ const INITIAL_QR_CONTENT: QRCodeContent = {
 const INITIAL_CUSTOMIZATION: QRCodeCustomization = {
   foreground: "#000000",
   background: "#FFFFFF",
-  cornerStyle: "square",
-  dotStyle: "square",
 };
 
 export const QRGeneratorPage = () => {

@@ -6,7 +6,6 @@ import type {
   QRCodeVCard,
   QRCodeWiFi,
 } from "@/types/qr-code";
-import modifySvgStyles from "@/utils/svg-modifier";
 
 export class QRCodeService {
   private static encodeVCard(vcard: QRCodeVCard): string {
@@ -133,30 +132,19 @@ export class QRCodeService {
 
     try {
       if (output.format === "svg") {
-        // Generate SVG with higher resolution for better styling
+        // Generate SVG QR code
         const svg = await QRCode.toString(text, {
           type: "svg",
           width: output.size,
-          margin: 2, // Keep margin small for better styling control
-          errorCorrectionLevel: "Q", // Higher error correction for better reliability
+          margin: output.margin,
+          errorCorrectionLevel: output.errorCorrectionLevel,
           color: {
-            dark: "#000000", // Use black initially, will be overridden by currentColor
-            light: "#0000", // Transparent background
+            dark: customization?.foreground || "#000000",
+            light: customization?.background || "#ffffff",
           },
         });
 
-        // Apply styles
-        const modifiedSvg = modifySvgStyles(svg, customization);
-
-        // Add wrapper SVG with background and foreground color handling
-        const color = customization?.foreground || "#000000";
-        const bgColor = customization?.background || "#ffffff";
-
-        return `<svg viewBox="0 0 ${output.size} ${output.size}" 
-          width="${output.size}" height="${output.size}" 
-          style="color: ${color}; background-color: ${bgColor}">
-          ${modifiedSvg}
-        </svg>`;
+        return svg;
       } else {
         // For non-SVG formats, use regular QR code generation
         const dataUrl = await QRCode.toDataURL(text, {

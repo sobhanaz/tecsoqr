@@ -1,53 +1,52 @@
 export type QRCodeType =
-  | 'url'
-  | 'text'
-  | 'email'
-  | 'phone'
-  | 'sms'
-  | 'vcard'
-  | 'mecard'
-  | 'location'
-  | 'wifi'
-  | 'event'
-  | 'bitcoin'
-  | 'facebook'
-  | 'twitter'
-  | 'youtube';
+  | "url"
+  | "text"
+  | "email"
+  | "phone"
+  | "sms"
+  | "vcard"
+  | "mecard"
+  | "wifi"
+  | "event"
+  | "bitcoin"
+  | "facebook"
+  | "twitter"
+  | "youtube";
 
 export interface QRCodeBase {
-  type: QRCodeType;
+  type: string;
 }
 
 export interface QRCodeURL extends QRCodeBase {
-  type: 'url';
+  type: "url";
   url: string;
 }
 
 export interface QRCodeText extends QRCodeBase {
-  type: 'text';
+  type: "text";
   text: string;
 }
 
 export interface QRCodeEmail extends QRCodeBase {
-  type: 'email';
+  type: "email";
   email: string;
   subject?: string;
   body?: string;
 }
 
 export interface QRCodePhone extends QRCodeBase {
-  type: 'phone';
+  type: "phone";
   number: string;
 }
 
 export interface QRCodeSMS extends QRCodeBase {
-  type: 'sms';
+  type: "sms";
   number: string;
   message?: string;
 }
 
 export interface QRCodeVCard extends QRCodeBase {
-  type: 'vcard';
+  type: "vcard";
   firstName: string;
   lastName: string;
   organization?: string;
@@ -67,7 +66,7 @@ export interface QRCodeVCard extends QRCodeBase {
 }
 
 export interface QRCodeMeCard extends QRCodeBase {
-  type: 'mecard';
+  type: "mecard";
   name: string;
   phone?: string;
   email?: string;
@@ -76,22 +75,22 @@ export interface QRCodeMeCard extends QRCodeBase {
 }
 
 export interface QRCodeLocation extends QRCodeBase {
-  type: 'location';
+  type: "location";
   latitude: number;
   longitude: number;
   name?: string;
 }
 
 export interface QRCodeWiFi extends QRCodeBase {
-  type: 'wifi';
+  type: "wifi";
   ssid: string;
   password?: string;
-  encryption: 'WEP' | 'WPA' | 'nopass';
+  encryption: "WEP" | "WPA" | "nopass";
   hidden?: boolean;
 }
 
 export interface QRCodeEvent extends QRCodeBase {
-  type: 'event';
+  type: "event";
   title: string;
   description?: string;
   location?: string;
@@ -101,7 +100,7 @@ export interface QRCodeEvent extends QRCodeBase {
 }
 
 export interface QRCodeBitcoin extends QRCodeBase {
-  type: 'bitcoin';
+  type: "bitcoin";
   address: string;
   amount?: number;
   label?: string;
@@ -109,7 +108,7 @@ export interface QRCodeBitcoin extends QRCodeBase {
 }
 
 export interface QRCodeSocial extends QRCodeBase {
-  type: 'facebook' | 'twitter' | 'youtube';
+  type: "facebook" | "twitter" | "youtube";
   username: string;
 }
 
@@ -117,22 +116,16 @@ export interface QRCodeCustomization {
   foreground?: string;
   background?: string;
   gradient?: {
-    type: 'linear' | 'radial';
+    type: "linear" | "radial";
     colorStops: Array<{ offset: number; color: string }>;
   };
-  logo?: {
-    file: File;
-    size?: number; // percentage of QR code size (1-30)
-  };
-  cornerStyle?: 'square' | 'rounded' | 'dots';
-  dotStyle?: 'square' | 'rounded' | 'dots';
 }
 
 export interface QRCodeOutput {
-  format: 'png' | 'svg' | 'pdf' | 'eps';
+  format: "png" | "svg" | "pdf" | "eps";
   size: number; // pixel size
   margin: number; // quiet zone size in modules
-  errorCorrectionLevel: 'L' | 'M' | 'Q' | 'H';
+  errorCorrectionLevel: "L" | "M" | "Q" | "H";
 }
 
 export type QRCodeContent =
