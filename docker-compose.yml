@@ -1,0 +1,20 @@
+version: '3.8'
+services:
+  tecsoqr:
+    build: .
+    image: tecsoqr:latest
+    restart: unless-stopped
+    networks:
+      - tecsoqr_net
+    ports:
+      - "127.0.0.1:3001:80" # Bind to localhost only to avoid exposing container directly; host nginx will proxy to this
+    volumes:
+      - tecsoqr_data:/var/lib/tecsoqr
+
+networks:
+  tecsoqr_net:
+    driver: bridge
+
+volumes:
+  tecsoqr_data:
+    driver: local
