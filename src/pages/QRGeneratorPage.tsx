@@ -69,7 +69,7 @@ export const QRGeneratorPage = () => {
   return (
     <PageLayout>
       <PageHeader
-        title="tecso QR Code Generator sobhan"
+        title="tecso QR Code Generator "
         description="Create custom QR codes for URLs, text, Wi-Fi networks, and more"
       />
 
