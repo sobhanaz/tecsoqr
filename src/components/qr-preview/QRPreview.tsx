@@ -12,7 +12,7 @@ import {
   VStack,
   useToast,
 } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import type {
   QRCodeContent,
   QRCodeCustomization,
@@ -30,6 +30,7 @@ export const QRPreview = ({ content, customization }: QRPreviewProps) => {
   const [qrCode, setQrCode] = useState<string>("");
   const [size, setSize] = useState<number>(300);
   const toast = useToast();
+  const hasShownErrorToast = useRef(false);
 
   useEffect(() => {
     const generateQRCode = async () => {
@@ -48,25 +49,38 @@ export const QRPreview = ({ content, customization }: QRPreviewProps) => {
         );
         if (typeof qrCodeData === "string" && qrCodeData.startsWith("<svg")) {
           setQrCode(qrCodeData);
+          // Reset error toast flag on successful generation
+          hasShownErrorToast.current = false;
         } else {
           console.error("Invalid QR code data received:", qrCodeData);
-          toast({
-            title: "Error generating QR code",
-            description: "Invalid SVG data received. Please try again.",
-            status: "error",
-            duration: 5000,
-            isClosable: true,
-          });
+          if (!hasShownErrorToast.current) {
+            hasShownErrorToast.current = true;
+            toast({
+              title: "⚠️ Generation Failed",
+              description: "Unable to create QR code. Please check your input.",
+              status: "error",
+              duration: 4000,
+              isClosable: true,
+              position: "bottom-left",
+              variant: "solid",
+            });
+          }
         }
       } catch (error) {
         console.error("Error generating QR code:", error);
-        toast({
-          title: "Error generating QR code",
-          description: "Please check your input and try again.",
-          status: "error",
-          duration: 5000,
-          isClosable: true,
-        });
+        if (!hasShownErrorToast.current) {
+          hasShownErrorToast.current = true;
+          toast({
+            title: "⚠️ Generation Error",
+            description:
+              "Something went wrong. Please verify your data and try again.",
+            status: "error",
+            duration: 4000,
+            isClosable: true,
+            position: "bottom-left",
+            variant: "solid",
+          });
+        }
       }
     };
 
@@ -105,17 +119,23 @@ export const QRPreview = ({ content, customization }: QRPreviewProps) => {
       document.body.removeChild(link);
 
       toast({
-        title: "QR code downloaded",
+        title: "📥 Download Complete!",
+        description: `QR code saved as ${fileName}`,
         status: "success",
         duration: 3000,
-      });
-    } catch (error) {
-      toast({
-        title: "Error downloading QR code",
-        description: "Please try again.",
-        status: "error",
-        duration: 5000,
         isClosable: true,
+        position: "bottom-right",
+        variant: "subtle",
+      });
+    } catch {
+      toast({
+        title: "😱 Download Failed",
+        description: "Unable to save the file. Please try again.",
+        status: "error",
+        duration: 4000,
+        isClosable: true,
+        position: "bottom-left",
+        variant: "solid",
       });
     }
   };

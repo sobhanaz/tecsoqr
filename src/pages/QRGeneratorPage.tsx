@@ -11,8 +11,16 @@ import {
   VStack,
   useToast,
 } from "@chakra-ui/react";
-import { useState } from "react";
-import type { QRCodeContent, QRCodeCustomization } from "@/types/qr-code";
+import { useState, useRef } from "react";
+import type {
+  QRCodeContent,
+  QRCodeCustomization,
+  QRCodeURL,
+  QRCodeText,
+  QRCodeWiFi,
+  QRCodeVCard,
+  QRCodeEmail,
+} from "@/types/qr-code";
 import {
   URLForm,
   TextForm,
@@ -40,30 +48,53 @@ export const QRGeneratorPage = () => {
     INITIAL_CUSTOMIZATION
   );
   const toast = useToast();
+  const hasShownContentToast = useRef(false);
+  const hasShownStyleToast = useRef(false);
 
-  const handleContentChange =
-    (_: QRCodeContent["type"]) => (newContent: QRCodeContent) => {
-      setContent(newContent);
+  const handleContentChange = (newContent: QRCodeContent) => {
+    setContent(newContent);
+
+    // Only show toast once per session and only if content has meaningful data
+    const hasContent =
+      (newContent.type === "url" &&
+        newContent.url &&
+        newContent.url !== "https://") ||
+      (newContent.type === "text" && newContent.text?.trim()) ||
+      (newContent.type === "email" && newContent.email?.trim()) ||
+      (newContent.type === "wifi" && newContent.ssid?.trim()) ||
+      (newContent.type === "vcard" &&
+        (newContent.firstName?.trim() || newContent.lastName?.trim()));
+
+    if (hasContent && !hasShownContentToast.current) {
+      hasShownContentToast.current = true;
       toast({
-        title: "QR Code Updated",
-        description: "Your QR code content has been updated.",
+        title: "✨ QR Code Ready!",
+        description: "Your QR code has been generated successfully.",
         status: "success",
-        duration: 2000,
+        duration: 3000,
         isClosable: true,
-        position: "top-right",
+        position: "bottom-right",
+        variant: "subtle",
       });
-    };
+    }
+  };
 
   const handleCustomizationChange = (newCustomization: QRCodeCustomization) => {
     setCustomization(newCustomization);
-    toast({
-      title: "Style Updated",
-      description: "QR code appearance has been updated.",
-      status: "success",
-      duration: 2000,
-      isClosable: true,
-      position: "top-right",
-    });
+
+    // Only show style toast once per session
+    if (!hasShownStyleToast.current) {
+      hasShownStyleToast.current = true;
+      toast({
+        title: "🎨 Style Applied!",
+        description: "Your QR code design has been customized.",
+        status: "info",
+        duration: 2500,
+        isClosable: true,
+        position: "bottom-right",
+        variant: "left-accent",
+      });
+    }
   };
 
   return (
@@ -104,32 +135,32 @@ export const QRGeneratorPage = () => {
                   <TabPanels>
                     <TabPanel>
                       <URLForm
-                        value={content as any}
-                        onChange={handleContentChange("url")}
+                        value={content as QRCodeURL}
+                        onChange={handleContentChange}
                       />
                     </TabPanel>
                     <TabPanel>
                       <TextForm
-                        value={content as any}
-                        onChange={handleContentChange("text")}
+                        value={content as QRCodeText}
+                        onChange={handleContentChange}
                       />
                     </TabPanel>
                     <TabPanel>
                       <WiFiForm
-                        value={content as any}
-                        onChange={handleContentChange("wifi")}
+                        value={content as QRCodeWiFi}
+                        onChange={handleContentChange}
                       />
                     </TabPanel>
                     <TabPanel>
                       <VCardForm
-                        value={content as any}
-                        onChange={handleContentChange("vcard")}
+                        value={content as QRCodeVCard}
+                        onChange={handleContentChange}
                       />
                     </TabPanel>
                     <TabPanel>
                       <EmailForm
-                        value={content as any}
-                        onChange={handleContentChange("email")}
+                        value={content as QRCodeEmail}
+                        onChange={handleContentChange}
                       />
                     </TabPanel>
                   </TabPanels>
