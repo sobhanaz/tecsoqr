@@ -19,6 +19,7 @@ export const VCardForm = ({ value, onChange }: VCardFormProps) => {
   ) => {
     onChange({
       ...value,
+      type: 'vcard',
       [field]: e.target.value,
     });
   };

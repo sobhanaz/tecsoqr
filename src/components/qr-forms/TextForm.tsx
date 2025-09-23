@@ -11,6 +11,7 @@ export const TextForm = ({ value, onChange }: TextFormProps) => {
   const handleTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     onChange({
       ...value,
+      type: 'text',
       text: e.target.value,
     });
   };

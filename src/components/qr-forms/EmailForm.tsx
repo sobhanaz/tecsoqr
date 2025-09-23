@@ -13,6 +13,7 @@ export const EmailForm = ({ value, onChange }: EmailFormProps) => {
   ) => {
     onChange({
       ...value,
+      type: 'email',
       [field]: e.target.value,
     });
   };

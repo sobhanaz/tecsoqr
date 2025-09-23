@@ -13,6 +13,7 @@ export const WiFiForm = ({ value, onChange }: WiFiFormProps) => {
   ) => {
     onChange({
       ...value,
+      type: 'wifi',
       [field]: e.target.value,
     });
   };
@@ -20,6 +21,7 @@ export const WiFiForm = ({ value, onChange }: WiFiFormProps) => {
   const handleHiddenChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     onChange({
       ...value,
+      type: 'wifi',
       hidden: e.target.checked,
     });
   };

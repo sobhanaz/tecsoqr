@@ -11,6 +11,7 @@ export const URLForm = ({ value, onChange }: URLFormProps) => {
   const handleURLChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     onChange({
       ...value,
+      type: 'url',
       url: e.target.value,
     });
   };
