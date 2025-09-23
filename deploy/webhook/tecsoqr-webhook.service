@@ -1,0 +1,31 @@
+[Unit]
+Description=TECSOQR GitHub Webhook Server
+After=network.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=root
+Group=root
+WorkingDirectory=/root/tecsoqr/deploy/webhook
+ExecStart=/usr/bin/node webhook-server.js
+Restart=always
+RestartSec=10
+Environment=NODE_ENV=production
+Environment=WEBHOOK_PORT=9000
+Environment=WEBHOOK_SECRET=your-webhook-secret-change-me
+
+# Security settings
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/root/tecsoqr /var/log
+PrivateTmp=true
+
+# Logging
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=tecsoqr-webhook
+
+[Install]
+WantedBy=multi-user.target
