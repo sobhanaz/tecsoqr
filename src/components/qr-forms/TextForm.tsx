@@ -1,6 +1,6 @@
-import { Textarea } from '@chakra-ui/react';
-import type { QRCodeText } from '@/types/qr-code';
-import { QRForm, QRFormField } from './QRForm';
+import { Textarea } from "@chakra-ui/react";
+import type { QRCodeText } from "@/types/qr-code";
+import { QRForm, QRFormField } from "./QRForm";
 
 interface TextFormProps {
   value: QRCodeText;
@@ -11,7 +11,7 @@ export const TextForm = ({ value, onChange }: TextFormProps) => {
   const handleTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     onChange({
       ...value,
-      type: 'text',
+      type: "text",
       text: e.target.value,
     });
   };

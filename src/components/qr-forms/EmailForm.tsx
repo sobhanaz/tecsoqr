@@ -1,6 +1,6 @@
-import { Input, Textarea, VStack } from '@chakra-ui/react';
-import type { QRCodeEmail } from '@/types/qr-code';
-import { QRForm, QRFormField } from './QRForm';
+import { Input, Textarea, VStack } from "@chakra-ui/react";
+import type { QRCodeEmail } from "@/types/qr-code";
+import { QRForm, QRFormField } from "./QRForm";
 
 interface EmailFormProps {
   value: QRCodeEmail;
@@ -8,15 +8,15 @@ interface EmailFormProps {
 }
 
 export const EmailForm = ({ value, onChange }: EmailFormProps) => {
-  const handleChange = (field: keyof QRCodeEmail) => (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    onChange({
-      ...value,
-      type: 'email',
-      [field]: e.target.value,
-    });
-  };
+  const handleChange =
+    (field: keyof QRCodeEmail) =>
+    (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+      onChange({
+        ...value,
+        type: "email",
+        [field]: e.target.value,
+      });
+    };
 
   return (
     <QRForm value={value} onChange={onChange}>
@@ -26,7 +26,7 @@ export const EmailForm = ({ value, onChange }: EmailFormProps) => {
             type="email"
             placeholder="example@domain.com"
             value={value.email}
-            onChange={handleChange('email')}
+            onChange={handleChange("email")}
           />
         </QRFormField>
 
@@ -34,7 +34,7 @@ export const EmailForm = ({ value, onChange }: EmailFormProps) => {
           <Input
             placeholder="Email subject"
             value={value.subject}
-            onChange={handleChange('subject')}
+            onChange={handleChange("subject")}
           />
         </QRFormField>
 
@@ -42,7 +42,7 @@ export const EmailForm = ({ value, onChange }: EmailFormProps) => {
           <Textarea
             placeholder="Email body"
             value={value.body}
-            onChange={handleChange('body')}
+            onChange={handleChange("body")}
             rows={4}
           />
         </QRFormField>

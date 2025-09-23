@@ -1,6 +1,6 @@
-import { Input } from '@chakra-ui/react';
-import type { QRCodeURL } from '@/types/qr-code';
-import { QRForm, QRFormField } from './QRForm';
+import { Input } from "@chakra-ui/react";
+import type { QRCodeURL } from "@/types/qr-code";
+import { QRForm, QRFormField } from "./QRForm";
 
 interface URLFormProps {
   value: QRCodeURL;
@@ -11,7 +11,7 @@ export const URLForm = ({ value, onChange }: URLFormProps) => {
   const handleURLChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     onChange({
       ...value,
-      type: 'url',
+      type: "url",
       url: e.target.value,
     });
   };

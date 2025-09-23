@@ -1,6 +1,6 @@
-import { Input, Select, Switch, VStack } from '@chakra-ui/react';
-import type { QRCodeWiFi } from '@/types/qr-code';
-import { QRForm, QRFormField } from './QRForm';
+import { Input, Select, Switch, VStack } from "@chakra-ui/react";
+import type { QRCodeWiFi } from "@/types/qr-code";
+import { QRForm, QRFormField } from "./QRForm";
 
 interface WiFiFormProps {
   value: QRCodeWiFi;
@@ -8,20 +8,20 @@ interface WiFiFormProps {
 }
 
 export const WiFiForm = ({ value, onChange }: WiFiFormProps) => {
-  const handleChange = (field: keyof QRCodeWiFi) => (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
-    onChange({
-      ...value,
-      type: 'wifi',
-      [field]: e.target.value,
-    });
-  };
+  const handleChange =
+    (field: keyof QRCodeWiFi) =>
+    (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+      onChange({
+        ...value,
+        type: "wifi",
+        [field]: e.target.value,
+      });
+    };
 
   const handleHiddenChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     onChange({
       ...value,
-      type: 'wifi',
+      type: "wifi",
       hidden: e.target.checked,
     });
   };
@@ -33,7 +33,7 @@ export const WiFiForm = ({ value, onChange }: WiFiFormProps) => {
           <Input
             placeholder="Enter network name"
             value={value.ssid}
-            onChange={handleChange('ssid')}
+            onChange={handleChange("ssid")}
           />
         </QRFormField>
 
@@ -42,12 +42,15 @@ export const WiFiForm = ({ value, onChange }: WiFiFormProps) => {
             type="password"
             placeholder="Enter network password"
             value={value.password}
-            onChange={handleChange('password')}
+            onChange={handleChange("password")}
           />
         </QRFormField>
 
         <QRFormField label="Encryption" isRequired>
-          <Select value={value.encryption} onChange={handleChange('encryption')}>
+          <Select
+            value={value.encryption}
+            onChange={handleChange("encryption")}
+          >
             <option value="WPA">WPA/WPA2</option>
             <option value="WEP">WEP</option>
             <option value="nopass">No Password</option>
@@ -55,10 +58,7 @@ export const WiFiForm = ({ value, onChange }: WiFiFormProps) => {
         </QRFormField>
 
         <QRFormField label="Hidden Network">
-          <Switch
-            isChecked={value.hidden}
-            onChange={handleHiddenChange}
-          />
+          <Switch isChecked={value.hidden} onChange={handleHiddenChange} />
         </QRFormField>
       </VStack>
     </QRForm>

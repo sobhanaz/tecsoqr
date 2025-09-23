@@ -1,12 +1,6 @@
-import {
-  Grid,
-  GridItem,
-  Input,
-  SimpleGrid,
-  VStack,
-} from '@chakra-ui/react';
-import type { QRCodeVCard } from '@/types/qr-code';
-import { QRForm, QRFormField } from './QRForm';
+import { Grid, GridItem, Input, SimpleGrid, VStack } from "@chakra-ui/react";
+import type { QRCodeVCard } from "@/types/qr-code";
+import { QRForm, QRFormField } from "./QRForm";
 
 interface VCardFormProps {
   value: QRCodeVCard;
@@ -14,15 +8,14 @@ interface VCardFormProps {
 }
 
 export const VCardForm = ({ value, onChange }: VCardFormProps) => {
-  const handleChange = (field: keyof QRCodeVCard) => (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    onChange({
-      ...value,
-      type: 'vcard',
-      [field]: e.target.value,
-    });
-  };
+  const handleChange =
+    (field: keyof QRCodeVCard) => (e: React.ChangeEvent<HTMLInputElement>) => {
+      onChange({
+        ...value,
+        type: "vcard",
+        [field]: e.target.value,
+      });
+    };
 
   return (
     <QRForm value={value} onChange={onChange}>
@@ -32,7 +25,7 @@ export const VCardForm = ({ value, onChange }: VCardFormProps) => {
             <Input
               placeholder="John"
               value={value.firstName}
-              onChange={handleChange('firstName')}
+              onChange={handleChange("firstName")}
             />
           </QRFormField>
 
@@ -40,7 +33,7 @@ export const VCardForm = ({ value, onChange }: VCardFormProps) => {
             <Input
               placeholder="Doe"
               value={value.lastName}
-              onChange={handleChange('lastName')}
+              onChange={handleChange("lastName")}
             />
           </QRFormField>
         </SimpleGrid>
@@ -50,7 +43,7 @@ export const VCardForm = ({ value, onChange }: VCardFormProps) => {
             <Input
               placeholder="Company Name"
               value={value.organization}
-              onChange={handleChange('organization')}
+              onChange={handleChange("organization")}
             />
           </QRFormField>
 
@@ -58,7 +51,7 @@ export const VCardForm = ({ value, onChange }: VCardFormProps) => {
             <Input
               placeholder="Job Title"
               value={value.title}
-              onChange={handleChange('title')}
+              onChange={handleChange("title")}
             />
           </QRFormField>
         </SimpleGrid>
@@ -71,7 +64,7 @@ export const VCardForm = ({ value, onChange }: VCardFormProps) => {
                   type="tel"
                   placeholder="+1234567890"
                   value={value.workPhone}
-                  onChange={handleChange('workPhone')}
+                  onChange={handleChange("workPhone")}
                 />
               </QRFormField>
 
@@ -80,7 +73,7 @@ export const VCardForm = ({ value, onChange }: VCardFormProps) => {
                   type="tel"
                   placeholder="+1234567890"
                   value={value.homePhone}
-                  onChange={handleChange('homePhone')}
+                  onChange={handleChange("homePhone")}
                 />
               </QRFormField>
 
@@ -89,7 +82,7 @@ export const VCardForm = ({ value, onChange }: VCardFormProps) => {
                   type="tel"
                   placeholder="+1234567890"
                   value={value.mobilePhone}
-                  onChange={handleChange('mobilePhone')}
+                  onChange={handleChange("mobilePhone")}
                 />
               </QRFormField>
             </VStack>
@@ -102,7 +95,7 @@ export const VCardForm = ({ value, onChange }: VCardFormProps) => {
                   type="email"
                   placeholder="john@example.com"
                   value={value.email}
-                  onChange={handleChange('email')}
+                  onChange={handleChange("email")}
                 />
               </QRFormField>
 
@@ -111,7 +104,7 @@ export const VCardForm = ({ value, onChange }: VCardFormProps) => {
                   type="url"
                   placeholder="https://example.com"
                   value={value.website}
-                  onChange={handleChange('website')}
+                  onChange={handleChange("website")}
                 />
               </QRFormField>
             </VStack>
@@ -123,7 +116,7 @@ export const VCardForm = ({ value, onChange }: VCardFormProps) => {
             <Input
               placeholder="123 Main St"
               value={value.street}
-              onChange={handleChange('street')}
+              onChange={handleChange("street")}
             />
           </QRFormField>
 
@@ -132,7 +125,7 @@ export const VCardForm = ({ value, onChange }: VCardFormProps) => {
               <Input
                 placeholder="City"
                 value={value.city}
-                onChange={handleChange('city')}
+                onChange={handleChange("city")}
               />
             </QRFormField>
 
@@ -140,7 +133,7 @@ export const VCardForm = ({ value, onChange }: VCardFormProps) => {
               <Input
                 placeholder="State"
                 value={value.state}
-                onChange={handleChange('state')}
+                onChange={handleChange("state")}
               />
             </QRFormField>
           </SimpleGrid>
@@ -150,7 +143,7 @@ export const VCardForm = ({ value, onChange }: VCardFormProps) => {
               <Input
                 placeholder="ZIP Code"
                 value={value.zipCode}
-                onChange={handleChange('zipCode')}
+                onChange={handleChange("zipCode")}
               />
             </QRFormField>
 
@@ -158,7 +151,7 @@ export const VCardForm = ({ value, onChange }: VCardFormProps) => {
               <Input
                 placeholder="Country"
                 value={value.country}
-                onChange={handleChange('country')}
+                onChange={handleChange("country")}
               />
             </QRFormField>
           </SimpleGrid>
