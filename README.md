@@ -22,12 +22,13 @@ A professional, feature-rich QR code generator built with modern web technologie
 - **High Quality**: Adjustable error correction levels for optimal scanning
 - **Export Options**: Download QR codes as PNG, SVG, or share directly
 - **PWA Support**: Install as a progressive web app for offline access
+- **🌟 Neon Mode**: GitHub-inspired cyberpunk theme with animated gradients and glow effects
 
 ## 🚀 Quick Start
 
 ### Prerequisites
 
-- Node.js 18+ 
+- Node.js 18+
 - npm or yarn
 
 ### Installation
@@ -91,9 +92,36 @@ The application uses Chakra UI with a custom theme. To modify the styling:
 2. Modify `src/index.css` for global styles
 3. Update component-specific styles in individual component files
 
+## 🌟 Neon Mode
+
+TECSOQR features a stunning GitHub-inspired neon theme that transforms the interface into a cyberpunk experience:
+
+### Activation
+
+- Click the **⚡ bolt icon** in the navbar to toggle Neon Mode
+- Your preference is automatically saved in localStorage
+- Works seamlessly with both light and dark color modes
+
+### Features
+
+- **Animated Hero Section**: Floating badges with neon glow effects
+- **Gradient Text**: Dynamic color transitions on headings
+- **Neon Cards**: Glassmorphic containers with animated borders
+- **GitHub-style Elements**: Star buttons, gradient backgrounds, and subtle grid overlay
+- **Responsive Glow**: Hover effects and interactive animations
+- **Accessibility Maintained**: All neon effects preserve readability and contrast
+
+### Technical Implementation
+
+- CSS-in-JS with Emotion for dynamic styling
+- Chakra UI theme variants for consistent neon styling
+- React Context for global neon state management
+- CSS custom properties for optimal performance
+
 ## 📱 PWA Features
 
 This application is a Progressive Web App (PWA) with:
+
 - Offline functionality
 - Install to home screen
 - Automatic updates
@@ -153,6 +181,6 @@ This project is developed and maintained by **TECSO Team** - an innovative IT co
 
 **Built with ❤️ by TECSO Team**
 
-*Empowering businesses through innovative technology solutions*
+_Empowering businesses through innovative technology solutions_
 
 </div>

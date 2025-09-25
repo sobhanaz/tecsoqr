@@ -10,6 +10,7 @@ import {
   Tabs,
   VStack,
   useToast,
+  Heading,
 } from "@chakra-ui/react";
 import { useState, useRef } from "react";
 import type {
@@ -30,7 +31,7 @@ import {
 } from "@/components/qr-forms";
 import { QRCustomization } from "@/components/qr-customize";
 import { QRPreview } from "@/components/qr-preview";
-import { PageLayout } from "@/components/ui/Layout";
+import { useNeonMode } from "@/theme/NeonModeProvider";
 
 const INITIAL_QR_CONTENT: QRCodeContent = {
   type: "url",
@@ -50,6 +51,7 @@ export const QRGeneratorPage = () => {
   const toast = useToast();
   const hasShownContentToast = useRef(false);
   const hasShownStyleToast = useRef(false);
+  const { neon } = useNeonMode();
 
   const handleContentChange = (newContent: QRCodeContent) => {
     setContent(newContent);
@@ -98,96 +100,98 @@ export const QRGeneratorPage = () => {
   };
 
   return (
-    <PageLayout>
-      <Box
-        w="100%"
-        maxW="container.lg"
-        mx="auto"
-        flex="1"
-        display="flex"
-        flexDirection="column"
-      >
-        <HStack
-          spacing={{ base: 6, lg: 8 }}
-          align="flex-start"
-          flexDirection={{ base: "column", lg: "row" }}
-          justify="center"
-          flex="1"
+    <Box w="100%" flex="1" display="flex" flexDirection="column">
+      <VStack spacing={6} mb={8}>
+        <Heading
+          as="h2"
+          size="lg"
+          textAlign="center"
+          layerStyle={neon ? "neonText" : undefined}
         >
-          {/* Left Column: Content and Customization */}
-          <VStack flex="1" w="100%" spacing={4}>
-            <Card w="100%">
-              <CardBody>
-                <Tabs isLazy variant="enclosed">
-                  <TabList>
-                    <Tab>URL</Tab>
-                    <Tab>Text</Tab>
-                    <Tab>Wi-Fi</Tab>
-                    <Tab>vCard</Tab>
-                    <Tab>Email</Tab>
-                  </TabList>
+          Create Your QR Code
+        </Heading>
+      </VStack>
 
-                  <TabPanels>
-                    <TabPanel>
-                      <URLForm
-                        value={content as QRCodeURL}
-                        onChange={handleContentChange}
-                      />
-                    </TabPanel>
-                    <TabPanel>
-                      <TextForm
-                        value={content as QRCodeText}
-                        onChange={handleContentChange}
-                      />
-                    </TabPanel>
-                    <TabPanel>
-                      <WiFiForm
-                        value={content as QRCodeWiFi}
-                        onChange={handleContentChange}
-                      />
-                    </TabPanel>
-                    <TabPanel>
-                      <VCardForm
-                        value={content as QRCodeVCard}
-                        onChange={handleContentChange}
-                      />
-                    </TabPanel>
-                    <TabPanel>
-                      <EmailForm
-                        value={content as QRCodeEmail}
-                        onChange={handleContentChange}
-                      />
-                    </TabPanel>
-                  </TabPanels>
-                </Tabs>
-              </CardBody>
-            </Card>
+      <HStack
+        spacing={{ base: 6, lg: 8 }}
+        align="flex-start"
+        flexDirection={{ base: "column", lg: "row" }}
+        justify="center"
+        flex="1"
+      >
+        {/* Left Column: Content and Customization */}
+        <VStack flex="1" w="100%" spacing={4}>
+          <Card w="100%" variant={neon ? "neon" : undefined}>
+            <CardBody>
+              <Tabs isLazy variant="soft-rounded">
+                <TabList>
+                  <Tab>URL</Tab>
+                  <Tab>Text</Tab>
+                  <Tab>Wi-Fi</Tab>
+                  <Tab>vCard</Tab>
+                  <Tab>Email</Tab>
+                </TabList>
 
-            <Card w="100%">
-              <CardBody>
-                <QRCustomization
-                  value={customization}
-                  onChange={handleCustomizationChange}
-                />
-              </CardBody>
-            </Card>
-          </VStack>
+                <TabPanels>
+                  <TabPanel>
+                    <URLForm
+                      value={content as QRCodeURL}
+                      onChange={handleContentChange}
+                    />
+                  </TabPanel>
+                  <TabPanel>
+                    <TextForm
+                      value={content as QRCodeText}
+                      onChange={handleContentChange}
+                    />
+                  </TabPanel>
+                  <TabPanel>
+                    <WiFiForm
+                      value={content as QRCodeWiFi}
+                      onChange={handleContentChange}
+                    />
+                  </TabPanel>
+                  <TabPanel>
+                    <VCardForm
+                      value={content as QRCodeVCard}
+                      onChange={handleContentChange}
+                    />
+                  </TabPanel>
+                  <TabPanel>
+                    <EmailForm
+                      value={content as QRCodeEmail}
+                      onChange={handleContentChange}
+                    />
+                  </TabPanel>
+                </TabPanels>
+              </Tabs>
+            </CardBody>
+          </Card>
 
-          {/* Right Column: Preview */}
-          <Box
-            flex={{ base: "1", lg: "0 0 400px" }}
-            w="100%"
-            position={{ base: "relative", lg: "sticky" }}
-            top={{ base: 0, lg: "24px" }}
-          >
-            <Card w="100%">
-              <CardBody>
-                <QRPreview content={content} customization={customization} />
-              </CardBody>
-            </Card>
-          </Box>
-        </HStack>
-      </Box>
-    </PageLayout>
+          <Card w="100%" variant={neon ? "neon" : undefined}>
+            <CardBody>
+              <QRCustomization
+                value={customization}
+                onChange={handleCustomizationChange}
+              />
+            </CardBody>
+          </Card>
+        </VStack>
+
+        {/* Right Column: Preview */}
+        <Box
+          flex={{ base: "1", lg: "0 0 400px" }}
+          w="100%"
+          position={{ base: "relative", lg: "sticky" }}
+          top={{ base: 0, lg: "24px" }}
+        >
+          <Card w="100%" variant={neon ? "neon" : undefined}>
+            <CardBody>
+              <QRPreview content={content} customization={customization} />
+            </CardBody>
+          </Card>
+        </Box>
+      </HStack>
+    </Box>
   );
 };
