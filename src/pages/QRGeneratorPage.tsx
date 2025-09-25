@@ -30,7 +30,7 @@ import {
 } from "@/components/qr-forms";
 import { QRCustomization } from "@/components/qr-customize";
 import { QRPreview } from "@/components/qr-preview";
-import { PageHeader, PageLayout } from "@/components/ui/Layout";
+import { PageLayout } from "@/components/ui/Layout";
 
 const INITIAL_QR_CONTENT: QRCodeContent = {
   type: "url",
@@ -99,11 +99,6 @@ export const QRGeneratorPage = () => {
 
   return (
     <PageLayout>
-      <PageHeader
-        title="tecso QR Code Generator "
-        description="Create custom QR codes for URLs, text, Wi-Fi networks, and more"
-      />
-
       <Box
         w="100%"
         maxW="container.lg"

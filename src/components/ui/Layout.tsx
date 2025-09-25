@@ -50,7 +50,7 @@ export const PageLayout = ({ children }: PageLayoutProps) => {
         flex="1"
         maxW="container.lg"
         px={{ base: 4, md: 6 }}
-        py={{ base: 4, md: 6 }}
+        py={{ base: 6, md: 8 }}
         display="flex"
         flexDirection="column"
         alignItems="center"

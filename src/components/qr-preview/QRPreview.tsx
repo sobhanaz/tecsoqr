@@ -28,7 +28,8 @@ interface QRPreviewProps {
 
 export const QRPreview = ({ content, customization }: QRPreviewProps) => {
   const [qrCode, setQrCode] = useState<string>("");
-  const [size, setSize] = useState<number>(300);
+  const [downloadSize, setDownloadSize] = useState<number>(1000);
+  const displaySize = 300; // Fixed display size
   const toast = useToast();
   const hasShownErrorToast = useRef(false);
 
@@ -37,7 +38,7 @@ export const QRPreview = ({ content, customization }: QRPreviewProps) => {
       try {
         const output: QRCodeOutput = {
           format: "svg",
-          size: Math.max(size, 300), // Ensure minimum size for better visibility
+          size: displaySize, // Use fixed display size for preview
           margin: 4,
           errorCorrectionLevel: "M",
         };
@@ -85,13 +86,13 @@ export const QRPreview = ({ content, customization }: QRPreviewProps) => {
     };
 
     generateQRCode();
-  }, [content, customization, size, toast]);
+  }, [content, customization, toast]); // Removed size dependency
 
   const handleDownload = async (format: QRCodeOutput["format"]) => {
     try {
       const output: QRCodeOutput = {
         format,
-        size: Math.max(size, 1000), // Use higher resolution for downloads
+        size: downloadSize, // Use downloadSize for downloads
         margin: 4,
         errorCorrectionLevel: "M",
       };
@@ -151,7 +152,7 @@ export const QRPreview = ({ content, customization }: QRPreviewProps) => {
       <VStack spacing={6}>
         <Center
           w="100%"
-          h={`${size}px`}
+          h={`${displaySize}px`}
           position="relative"
           bg="gray.50"
           _dark={{ bg: "gray.700" }}
@@ -161,8 +162,8 @@ export const QRPreview = ({ content, customization }: QRPreviewProps) => {
           {qrCode ? (
             <Box
               dangerouslySetInnerHTML={{ __html: qrCode }}
-              w={`${size}px`}
-              h={`${size}px`}
+              w={`${displaySize}px`}
+              h={`${displaySize}px`}
               display="flex"
               alignItems="center"
               justifyContent="center"
@@ -175,23 +176,23 @@ export const QRPreview = ({ content, customization }: QRPreviewProps) => {
         <VStack spacing={4} w="100%">
           <HStack w="100%" spacing={4}>
             <Text fontSize="sm" whiteSpace="nowrap">
-              Size:
+              Download Size:
             </Text>
             <Slider
-              value={size}
-              min={100}
-              max={500}
-              step={10}
-              onChange={setSize}
-              aria-label="QR code size"
+              value={downloadSize}
+              min={500}
+              max={2000}
+              step={100}
+              onChange={setDownloadSize}
+              aria-label="Download QR code size"
             >
               <SliderTrack>
                 <SliderFilledTrack />
               </SliderTrack>
               <SliderThumb />
             </Slider>
-            <Text fontSize="sm" w="60px">
-              {size}px
+            <Text fontSize="sm" w="70px">
+              {downloadSize}px
             </Text>
           </HStack>
 
