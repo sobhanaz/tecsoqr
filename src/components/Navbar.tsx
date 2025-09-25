@@ -42,7 +42,7 @@ export const Navbar = () => {
       <Container maxW="1200px">
         <Flex justify="space-between" align="center">
           <HStack spacing={8}>
-            <Box>
+            <Box as="a" href="/tecsoqr/" cursor="pointer">
               <Image
                 h="40px"
                 src={import.meta.env.BASE_URL + "assets/logo.svg"}
@@ -53,9 +53,15 @@ export const Navbar = () => {
               />
             </Box>
             <HStack spacing={4} display={{ base: "none", md: "flex" }}>
-              <Button variant="ghost">ABOUT</Button>
-              <Button variant="ghost">QR CODE API</Button>
-              <Button variant="ghost">PRICING</Button>
+              <Button as="a" href="/tecsoqr/about" variant="ghost">
+                ABOUT
+              </Button>
+              <Button as="a" href="/tecsoqr/api" variant="ghost">
+                QR CODE API
+              </Button>
+              <Button as="a" href="/tecsoqr/pricing" variant="ghost">
+                PRICING
+              </Button>
             </HStack>
           </HStack>
 
@@ -167,9 +173,15 @@ export const Navbar = () => {
                 size="sm"
               />
               <MenuList>
-                <MenuItem>ABOUT</MenuItem>
-                <MenuItem>QR CODE API</MenuItem>
-                <MenuItem>PRICING</MenuItem>
+                <MenuItem as="a" href="/tecsoqr/about">
+                  ABOUT
+                </MenuItem>
+                <MenuItem as="a" href="/tecsoqr/api">
+                  QR CODE API
+                </MenuItem>
+                <MenuItem as="a" href="/tecsoqr/pricing">
+                  PRICING
+                </MenuItem>
                 <MenuItem>ENGLISH</MenuItem>
                 <MenuItem
                   as="a"
