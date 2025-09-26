@@ -464,7 +464,7 @@ export const AboutPage = () => {
                     variant="outline"
                     leftIcon={<FaGithub />}
                     as="a"
-                    href="https://github.com/tecsodev/tecsoqr"
+                    href="https://github.com/sobhanaz/tecsoqr"
                     target="_blank"
                     borderColor={neon ? "neon.cyan" : "brand.500"}
                     color={neon ? "neon.cyan" : "brand.500"}

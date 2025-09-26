@@ -127,7 +127,7 @@ export const Navbar = () => {
                 variant="ghost"
                 size="sm"
                 as="a"
-                href="https://github.com/tecsodev/tecsoqr"
+                href="https://github.com/sobhanaz/tecsoqr"
                 target="_blank"
               />
               <IconButton
@@ -141,7 +141,7 @@ export const Navbar = () => {
               />
               <Button
                 as="a"
-                href="https://github.com/tecsodev/tecsoqr"
+                href="https://github.com/sobhanaz/tecsoqr"
                 target="_blank"
                 size="sm"
                 variant="neon"
@@ -185,7 +185,7 @@ export const Navbar = () => {
                 <MenuItem>ENGLISH</MenuItem>
                 <MenuItem
                   as="a"
-                  href="https://github.com/tecsodev/tecsoqr"
+                  href="https://github.com/sobhanaz/tecsoqr"
                   target="_blank"
                 >
                   GITHUB

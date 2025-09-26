@@ -121,7 +121,7 @@ export const Hero = () => {
               variant="outline"
               leftIcon={<FaCode />}
               as="a"
-              href="https://github.com/tecsodev/tecsoqr"
+              href="https://github.com/sobhanaz/tecsoqr"
               target="_blank"
               borderColor={neon ? "neon.cyan" : "brand.500"}
               color={neon ? "neon.cyan" : "brand.500"}

@@ -23,7 +23,7 @@ export const Footer = () => {
         <VStack spacing={4}>
           <HStack spacing={6} flexWrap="wrap" justify="center">
             <Link
-              href="https://github.com/tecsodev/tecsoqr"
+              href="https://github.com/sobhanaz/tecsoqr"
               isExternal
               display="flex"
               alignItems="center"
