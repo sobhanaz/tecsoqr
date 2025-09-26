@@ -31,14 +31,14 @@ import {
   FaLinkedin,
   FaGithub,
 } from "react-icons/fa";
-import { useNeonMode } from "@/theme/NeonModeProvider";
+import { useNeonMode } from "@/theme/useNeonMode";
 
 const FeatureCard = ({
   icon,
   title,
   description,
 }: {
-  icon: any;
+  icon: React.ElementType;
   title: string;
   description: string;
 }) => {

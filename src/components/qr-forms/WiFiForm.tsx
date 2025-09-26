@@ -50,6 +50,8 @@ export const WiFiForm = ({ value, onChange }: WiFiFormProps) => {
           <Select
             value={value.encryption}
             onChange={handleChange("encryption")}
+            aria-label="Encryption"
+            title="Encryption"
           >
             <option value="WPA">WPA/WPA2</option>
             <option value="WEP">WEP</option>

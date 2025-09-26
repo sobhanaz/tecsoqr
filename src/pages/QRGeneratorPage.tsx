@@ -31,7 +31,7 @@ import {
 } from "@/components/qr-forms";
 import { QRCustomization } from "@/components/qr-customize";
 import { QRPreview } from "@/components/qr-preview";
-import { useNeonMode } from "@/theme/NeonModeProvider";
+import { useNeonMode } from "@/theme/useNeonMode";
 
 const INITIAL_QR_CONTENT: QRCodeContent = {
   type: "url",
@@ -124,7 +124,7 @@ export const QRGeneratorPage = () => {
           <Card w="100%" variant={neon ? "neon" : undefined}>
             <CardBody>
               <Tabs isLazy variant="soft-rounded">
-                <TabList>
+                <TabList overflowX={{ base: "auto", md: "visible" }}>
                   <Tab>URL</Tab>
                   <Tab>Text</Tab>
                   <Tab>Wi-Fi</Tab>
@@ -183,7 +183,7 @@ export const QRGeneratorPage = () => {
           flex={{ base: "1", lg: "0 0 400px" }}
           w="100%"
           position={{ base: "relative", lg: "sticky" }}
-          top={{ base: 0, lg: "24px" }}
+          top={{ base: 0, lg: 6 }}
         >
           <Card w="100%" variant={neon ? "neon" : undefined}>
             <CardBody>

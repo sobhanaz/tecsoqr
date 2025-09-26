@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState } from "react";
 import {
   Box,
   Button,
@@ -16,8 +16,8 @@ import {
   AccordionIcon,
   HStack,
   Text,
-} from '@chakra-ui/react';
-import { AddIcon, DownloadIcon } from '@chakra-ui/icons';
+} from "@chakra-ui/react";
+import { AddIcon, DownloadIcon } from "@chakra-ui/icons";
 
 interface QRFormProps {
   onUpdate: (data: QRCodeData) => void;
@@ -29,25 +29,26 @@ export interface QRCodeData {
   foregroundColor: string;
   backgroundColor: string;
   size: number;
-  level: 'L' | 'M' | 'Q' | 'H';
+  level: "L" | "M" | "Q" | "H";
 }
 
 const isValidInput = (type: string, content: string): boolean => {
   switch (type) {
-    case 'url':
+    case "url":
       try {
-        new URL(content.startsWith('http') ? content : `https://${content}`);
+        new URL(content.startsWith("http") ? content : `https://${content}`);
         return true;
       } catch {
         return false;
       }
-    case 'email':
+    case "email":
       return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(content);
-    case 'phone':
+    case "phone":
       return /^\+?[\d\s-]{6,}$/.test(content);
-    case 'wifi':
-      const [ssid] = content.split(',');
+    case "wifi": {
+      const [ssid] = content.split(",");
       return ssid.length > 0;
+    }
     default:
       return content.length > 0;
   }
@@ -55,72 +56,73 @@ const isValidInput = (type: string, content: string): boolean => {
 
 const getErrorMessage = (type: string): string => {
   switch (type) {
-    case 'url':
-      return 'Please enter a valid URL';
-    case 'email':
-      return 'Please enter a valid email address';
-    case 'phone':
-      return 'Please enter a valid phone number';
-    case 'wifi':
-      return 'Please enter a valid WiFi SSID';
+    case "url":
+      return "Please enter a valid URL";
+    case "email":
+      return "Please enter a valid email address";
+    case "phone":
+      return "Please enter a valid phone number";
+    case "wifi":
+      return "Please enter a valid WiFi SSID";
     default:
-      return 'This field is required';
+      return "This field is required";
   }
 };
 
 const getInputHelper = (type: string): string => {
   switch (type) {
-    case 'url':
-      return 'Enter a website URL (e.g., https://example.com)';
-    case 'email':
-      return 'Enter a valid email address';
-    case 'phone':
-      return 'Enter a phone number with country code';
-    case 'wifi':
-      return 'Enter WiFi SSID and password, separated by comma';
+    case "url":
+      return "Enter a website URL (e.g., https://example.com)";
+    case "email":
+      return "Enter a valid email address";
+    case "phone":
+      return "Enter a phone number with country code";
+    case "wifi":
+      return "Enter WiFi SSID and password, separated by comma";
     default:
-      return 'Enter the content for your QR code';
+      return "Enter the content for your QR code";
   }
 };
 
 const getPlaceholder = (type: string) => {
   switch (type) {
-    case 'url':
-      return 'Enter website URL (e.g., https://example.com)';
-    case 'text':
-      return 'Enter text content';
-    case 'email':
-      return 'Enter email address';
-    case 'phone':
-      return 'Enter phone number';
-    case 'sms':
-      return 'Enter phone number for SMS';
-    case 'vcard':
-      return 'Enter contact information';
-    case 'location':
-      return 'Enter address or coordinates';
-    case 'wifi':
-      return 'Enter WiFi network details';
-    case 'event':
-      return 'Enter event details';
+    case "url":
+      return "Enter website URL (e.g., https://example.com)";
+    case "text":
+      return "Enter text content";
+    case "email":
+      return "Enter email address";
+    case "phone":
+      return "Enter phone number";
+    case "sms":
+      return "Enter phone number for SMS";
+    case "vcard":
+      return "Enter contact information";
+    case "location":
+      return "Enter address or coordinates";
+    case "wifi":
+      return "Enter WiFi network details";
+    case "event":
+      return "Enter event details";
     default:
-      return 'Enter content';
+      return "Enter content";
   }
 };
 
 const formatContent = (type: string, content: string) => {
   switch (type) {
-    case 'url':
-      return content.startsWith('http') ? content : `https://${content}`;
-    case 'email':
+    case "url":
+      return content.startsWith("http") ? content : `https://${content}`;
+    case "email":
       return `mailto:${content}`;
-    case 'phone':
-      return `tel:${content.replace(/[^\d+]/g, '')}`;
-    case 'sms':
-      return `sms:${content.replace(/[^\d+]/g, '')}`;
-    case 'wifi':
-      const [ssid, pass, type = 'WPA'] = content.split(',');
+    case "phone":
+      return `tel:${content.replace(/[^\d+]/g, "")}`;
+    case "sms":
+      return `sms:${content.replace(/[^\d+]/g, "")}`;
+    case "wifi": {
+      const [ssid, pass, type = "WPA"] = content.split(",");
       return `WIFI:S:${ssid};T:${type};P:${pass};;`;
+    }
     default:
       return content;
   }
@@ -128,18 +130,20 @@ const formatContent = (type: string, content: string) => {
 
 export const QRForm = ({ onUpdate, type }: QRFormProps) => {
   const [formData, setFormData] = useState<QRCodeData>({
-    content: '',
-    foregroundColor: '#000000',
-    backgroundColor: '#FFFFFF',
+    content: "",
+    foregroundColor: "#000000",
+    backgroundColor: "#FFFFFF",
     size: 256,
-    level: 'M',
+    level: "M",
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     const { name, value } = e.target;
     const newData = {
       ...formData,
-      [name]: name === 'content' ? formatContent(type, value) : value,
+      [name]: name === "content" ? formatContent(type, value) : value,
     };
     setFormData(newData);
     onUpdate(newData);
@@ -147,9 +151,11 @@ export const QRForm = ({ onUpdate, type }: QRFormProps) => {
 
   return (
     <Box>
-      <FormControl 
-        mb={6} 
-        isInvalid={formData.content !== '' && !isValidInput(type, formData.content)}
+      <FormControl
+        mb={6}
+        isInvalid={
+          formData.content !== "" && !isValidInput(type, formData.content)
+        }
         role="group"
         aria-labelledby={`${type}-label`}
       >
@@ -171,11 +177,11 @@ export const QRForm = ({ onUpdate, type }: QRFormProps) => {
           bg="white"
           borderWidth={2}
           _focus={{
-            borderColor: 'brand.500',
-            boxShadow: '0 0 0 1px var(--chakra-colors-brand-500)'
+            borderColor: "brand.500",
+            boxShadow: "0 0 0 1px var(--chakra-colors-brand-500)",
           }}
           _hover={{
-            borderColor: 'gray.400'
+            borderColor: "gray.400",
           }}
           aria-label={`Enter ${type} for QR code generation`}
           aria-describedby={`${type}-helper`}
@@ -184,10 +190,8 @@ export const QRForm = ({ onUpdate, type }: QRFormProps) => {
         <FormHelperText id={`${type}-helper`}>
           {getInputHelper(type)}
         </FormHelperText>
-        {formData.content !== '' && !isValidInput(type, formData.content) && (
-          <FormErrorMessage>
-            {getErrorMessage(type)}
-          </FormErrorMessage>
+        {formData.content !== "" && !isValidInput(type, formData.content) && (
+          <FormErrorMessage>{getErrorMessage(type)}</FormErrorMessage>
         )}
       </FormControl>
 
@@ -250,8 +254,18 @@ export const QRForm = ({ onUpdate, type }: QRFormProps) => {
           <AccordionPanel pb={4}>
             <SimpleGrid columns={[1, 2]} spacing={4}>
               <FormControl>
-                <FormLabel>Size</FormLabel>
-                <Select name="size" value={formData.size} onChange={handleChange}>
+                <FormLabel id="qr-size-label" htmlFor="qr-size">
+                  Size
+                </FormLabel>
+                <Select
+                  id="qr-size"
+                  name="size"
+                  value={formData.size}
+                  onChange={handleChange}
+                  aria-label="QR size"
+                  aria-labelledby="qr-size-label"
+                  title="QR size"
+                >
                   <option value={128}>Small (128px)</option>
                   <option value={256}>Medium (256px)</option>
                   <option value={512}>Large (512px)</option>
@@ -260,8 +274,18 @@ export const QRForm = ({ onUpdate, type }: QRFormProps) => {
               </FormControl>
 
               <FormControl>
-                <FormLabel>Error Correction</FormLabel>
-                <Select name="level" value={formData.level} onChange={handleChange}>
+                <FormLabel id="qr-level-label" htmlFor="qr-level">
+                  Error Correction
+                </FormLabel>
+                <Select
+                  id="qr-level"
+                  name="level"
+                  value={formData.level}
+                  onChange={handleChange}
+                  aria-label="Error correction level"
+                  aria-labelledby="qr-level-label"
+                  title="Error correction level"
+                >
                   <option value="L">Low</option>
                   <option value="M">Medium</option>
                   <option value="Q">High</option>
@@ -272,7 +296,7 @@ export const QRForm = ({ onUpdate, type }: QRFormProps) => {
           </AccordionPanel>
         </AccordionItem>
       </Accordion>
-      
+
       <Box mt={6}>
         <Button
           colorScheme="brand"
@@ -282,8 +306,8 @@ export const QRForm = ({ onUpdate, type }: QRFormProps) => {
           leftIcon={<DownloadIcon boxSize={5} />}
           isDisabled={!formData.content}
           _hover={{
-            transform: 'translateY(-2px)',
-            shadow: 'lg'
+            transform: "translateY(-2px)",
+            shadow: "lg",
           }}
           transition="all 0.2s"
           fontWeight="bold"

@@ -20,7 +20,10 @@ import {
 } from "@chakra-ui/react";
 import { HamburgerIcon, MoonIcon, SunIcon } from "@chakra-ui/icons";
 import { FaGithub, FaTwitter, FaBolt } from "react-icons/fa";
-import { useNeonMode } from "@/theme/NeonModeProvider";
+import { useNeonMode } from "@/theme/useNeonMode";
+import { useSubscription } from "@/hooks/useSubscription";
+import { FormLabel } from "@chakra-ui/react";
+import { PWAInstall } from "./PWAInstall";
 
 export const Navbar = () => {
   const { colorMode, toggleColorMode } = useColorMode();
@@ -28,6 +31,7 @@ export const Navbar = () => {
   const borderColor = useColorModeValue("gray.100", "gray.700");
   const { neon, toggleNeon } = useNeonMode();
   const [pink, cyan] = useToken("colors", ["neon.pink", "neon.cyan"]);
+  const { plan, setPlan } = useSubscription();
 
   return (
     <Box
@@ -62,38 +66,82 @@ export const Navbar = () => {
               <Button as="a" href="/tecsoqr/pricing" variant="ghost">
                 PRICING
               </Button>
+              <Button as="a" href="/tecsoqr/bulk" variant="ghost">
+                BULK
+              </Button>
+              <Button as="a" href="/tecsoqr/analytics" variant="ghost">
+                ANALYTICS
+              </Button>
+              <Button as="a" href="/tecsoqr/contact" variant="ghost">
+                CONTACT
+              </Button>
             </HStack>
           </HStack>
 
           <HStack spacing={4}>
+            {/* Demo Plan Selector */}
+            <FormControl display={{ base: "none", md: "block" }} w="160px">
+              <FormLabel
+                id="plan-label"
+                htmlFor="plan-select"
+                m={0}
+                mb="2px"
+                fontSize="0.55rem"
+                textTransform="uppercase"
+                letterSpacing="0.05em"
+                color={useColorModeValue("gray.500", "gray.400")}
+              >
+                Plan
+              </FormLabel>
+              <Select
+                id="plan-select"
+                size="sm"
+                variant="filled"
+                bg={useColorModeValue("gray.100", "gray.700")}
+                value={plan}
+                onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
+                  setPlan(e.target.value as "free" | "pro" | "enterprise")
+                }
+                aria-label="Plan"
+                aria-labelledby="plan-label"
+                title="Plan"
+              >
+                <option value="free">FREE</option>
+                <option value="pro">PRO</option>
+                <option value="enterprise">ENTERPRISE</option>
+              </Select>
+            </FormControl>
+
             {/* Language Selector */}
             <FormControl display={{ base: "none", md: "block" }} w="120px">
-              <Box as="label" display="block" htmlFor="lang-select">
-                <Text
-                  display="block"
-                  fontSize="0.55rem"
-                  textTransform="uppercase"
-                  letterSpacing="0.05em"
-                  color={useColorModeValue("gray.500", "gray.400")}
-                  mb="2px"
-                >
-                  Language
-                </Text>
-                <Select
-                  id="lang-select"
-                  size="sm"
-                  variant="filled"
-                  bg={useColorModeValue("gray.100", "gray.700")}
-                  defaultValue="en"
-                  aria-label="Language"
-                >
-                  <option value="en">ENGLISH</option>
-                  <option value="es">ESPAÑOL</option>
-                  <option value="fr">FRANÇAIS</option>
-                  <option value="de">DEUTSCH</option>
-                  <option value="it">ITALIANO</option>
-                </Select>
-              </Box>
+              <FormLabel
+                id="lang-label"
+                htmlFor="lang-select"
+                m={0}
+                mb="2px"
+                fontSize="0.55rem"
+                textTransform="uppercase"
+                letterSpacing="0.05em"
+                color={useColorModeValue("gray.500", "gray.400")}
+              >
+                Language
+              </FormLabel>
+              <Select
+                id="lang-select"
+                size="sm"
+                variant="filled"
+                bg={useColorModeValue("gray.100", "gray.700")}
+                defaultValue="en"
+                aria-label="Language"
+                aria-labelledby="lang-label"
+                title="Language"
+              >
+                <option value="en">ENGLISH</option>
+                <option value="es">ESPAÑOL</option>
+                <option value="fr">FRANÇAIS</option>
+                <option value="de">DEUTSCH</option>
+                <option value="it">ITALIANO</option>
+              </Select>
             </FormControl>
 
             {/* Neon Toggle */}
@@ -121,6 +169,7 @@ export const Navbar = () => {
 
             {/* Social Links + GitHub Star */}
             <HStack spacing={2} display={{ base: "none", md: "flex" }}>
+              <PWAInstall />
               <IconButton
                 aria-label="GitHub"
                 icon={<FaGithub />}
@@ -181,6 +230,15 @@ export const Navbar = () => {
                 </MenuItem>
                 <MenuItem as="a" href="/tecsoqr/pricing">
                   PRICING
+                </MenuItem>
+                <MenuItem as="a" href="/tecsoqr/bulk">
+                  BULK
+                </MenuItem>
+                <MenuItem as="a" href="/tecsoqr/analytics">
+                  ANALYTICS
+                </MenuItem>
+                <MenuItem as="a" href="/tecsoqr/contact">
+                  CONTACT
                 </MenuItem>
                 <MenuItem>ENGLISH</MenuItem>
                 <MenuItem

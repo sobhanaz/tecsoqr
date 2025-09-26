@@ -30,7 +30,7 @@ import {
   TableContainer,
 } from "@chakra-ui/react";
 import { FaCode, FaKey, FaRocket, FaShieldAlt } from "react-icons/fa";
-import { useNeonMode } from "@/theme/NeonModeProvider";
+import { useNeonMode } from "@/theme/useNeonMode";
 
 const CodeBlock = ({
   children,
@@ -40,20 +40,19 @@ const CodeBlock = ({
   language?: string;
 }) => {
   const { neon } = useNeonMode();
+  const codeBg = useColorModeValue("gray.50", "gray.800");
+  const borderColor = useColorModeValue("gray.200", "gray.700");
+  const codeColor = useColorModeValue("gray.800", "gray.100");
 
   return (
     <Box
       as="pre"
       p={4}
-      bg={
-        neon ? "rgba(10,10,18,0.8)" : useColorModeValue("gray.50", "gray.800")
-      }
+      bg={neon ? "rgba(10,10,18,0.8)" : codeBg}
       borderRadius="md"
       overflow="auto"
       border="1px solid"
-      borderColor={
-        neon ? "neon.purple" : useColorModeValue("gray.200", "gray.700")
-      }
+      borderColor={neon ? "neon.purple" : borderColor}
       fontFamily="mono"
       fontSize="sm"
       position="relative"
@@ -72,7 +71,7 @@ const CodeBlock = ({
         display="block"
         whiteSpace="pre"
         bg="transparent"
-        color={neon ? "neon.cyan" : useColorModeValue("gray.800", "gray.100")}
+        color={neon ? "neon.cyan" : codeColor}
       >
         {children}
       </Code>

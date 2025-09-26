@@ -10,7 +10,7 @@ import {
 } from "@chakra-ui/react";
 import { keyframes } from "@emotion/react";
 import { FaGithub, FaStar, FaCode, FaRocket } from "react-icons/fa";
-import { useNeonMode } from "@/theme/NeonModeProvider";
+import { useNeonMode } from "@/theme/useNeonMode";
 
 const float = keyframes`
   0%, 100% { transform: translateY(0px) rotate(0deg); }

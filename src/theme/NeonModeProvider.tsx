@@ -1,23 +1,14 @@
-import React, {
-  createContext,
-  useContext,
-  useState,
-  useCallback,
-  useEffect,
-} from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { Global } from "@emotion/react";
 import { globalNeonStyles } from "../theme";
+import { NeonModeContext } from "./NeonModeContext";
 
-interface NeonModeContextValue {
+export interface NeonModeContextValue {
   neon: boolean;
   toggleNeon: () => void;
   enableNeon: () => void;
   disableNeon: () => void;
 }
-
-const NeonModeContext = createContext<NeonModeContextValue | undefined>(
-  undefined
-);
 
 export const NeonModeProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
@@ -68,11 +59,4 @@ export const NeonModeProvider: React.FC<{ children: React.ReactNode }> = ({
       {children}
     </NeonModeContext.Provider>
   );
-};
-
-// Hook to access neon mode
-export const useNeonMode = () => {
-  const ctx = useContext(NeonModeContext);
-  if (!ctx) throw new Error("useNeonMode must be used within NeonModeProvider");
-  return ctx;
 };

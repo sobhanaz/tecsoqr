@@ -9,7 +9,7 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { FaGithub, FaHeart } from "react-icons/fa";
-import { useNeonMode } from "@/theme/NeonModeProvider";
+import { useNeonMode } from "@/theme/useNeonMode";
 
 export const Footer = () => {
   const { neon } = useNeonMode();

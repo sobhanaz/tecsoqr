@@ -19,8 +19,10 @@
     "@chakra-ui/react": "^2.10.9",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
+    "file-saver": "^2.0.5",
     "framer-motion": "^10.18.0",
     "html-to-image": "^1.11.13",
+    "jszip": "^3.10.1",
     "qrcode": "^1.5.4",
     "qrcode.react": "^4.2.0",
     "react": "^19.1.1",
@@ -31,6 +33,7 @@
   "devDependencies": {
     "@chakra-ui/icons": "^2.2.4",
     "@eslint/js": "^9.33.0",
+    "@types/file-saver": "^2.0.7",
     "@types/qrcode": "^1.5.5",
     "@types/react": "^19.1.10",
     "@types/react-dom": "^19.1.7",

@@ -28,7 +28,9 @@ import {
   FaStar,
 } from "react-icons/fa";
 import { useState } from "react";
-import { useNeonMode } from "@/theme/NeonModeProvider";
+import { useSubscription } from "@/hooks/useSubscription";
+import { useNavigate } from "react-router-dom";
+import { useNeonMode } from "@/theme/useNeonMode";
 
 const PricingCard = ({
   title,
@@ -40,6 +42,7 @@ const PricingCard = ({
   ctaText,
   ctaVariant = "solid",
   yearlyPrice,
+  isYearly,
 }: {
   title: string;
   price: string;
@@ -50,9 +53,11 @@ const PricingCard = ({
   ctaText: string;
   ctaVariant?: string;
   yearlyPrice?: string;
+  isYearly: boolean;
 }) => {
   const { neon } = useNeonMode();
-  const [isYearly] = useState(false);
+  const { setPlan } = useSubscription();
+  const navigate = useNavigate();
 
   const displayPrice = isYearly && yearlyPrice ? yearlyPrice : price;
   const displayPeriod = isYearly ? "year" : period;
@@ -160,6 +165,18 @@ const PricingCard = ({
             colorScheme={neon ? "pink" : "brand"}
             w="full"
             mt={4}
+            onClick={() => {
+              if (title === "Free") {
+                setPlan("free");
+                navigate("/");
+              } else if (title === "Pro") {
+                setPlan("pro");
+                navigate("/bulk");
+              } else {
+                setPlan("enterprise");
+                navigate("/contact");
+              }
+            }}
           >
             {ctaText}
           </Button>
@@ -354,7 +371,7 @@ export const PricingPage = () => {
           {/* Pricing Cards */}
           <SimpleGrid columns={{ base: 1, lg: 3 }} spacing={8} w="full">
             {plans.map((plan, index) => (
-              <PricingCard key={index} {...plan} />
+              <PricingCard key={index} {...plan} isYearly={isYearly} />
             ))}
           </SimpleGrid>
 
