@@ -29,13 +29,7 @@ import {
   Td,
   TableContainer,
 } from "@chakra-ui/react";
-import {
-  FaCode,
-  FaDownload,
-  FaKey,
-  FaRocket,
-  FaShieldAlt,
-} from "react-icons/fa";
+import { FaCode, FaKey, FaRocket, FaShieldAlt } from "react-icons/fa";
 import { useNeonMode } from "@/theme/NeonModeProvider";
 
 const CodeBlock = ({

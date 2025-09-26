@@ -25,8 +25,6 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
 };
 
 const HomePage = () => {
-  const { neon } = useNeonMode();
-
   return (
     <Layout>
       <Hero />
